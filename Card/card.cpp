@@ -34,7 +34,8 @@ void Deck::addCard()
 
 void Deck::shuffleDeck()
 {
-	std::random_shuffle (this->cardsList
+	auto rng = std::default_random_engine{};
+	std::random_shuffle(this->cardsList.begin(), this->cardsList.end(), rng);
 }
 
 int Deck::removeCard()

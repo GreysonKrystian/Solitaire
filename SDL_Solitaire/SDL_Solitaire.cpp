@@ -1,21 +1,59 @@
-﻿// SDL_Solitaire.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
+﻿#include "SDL_Solitaire.h"
+#include "../Board/board.h"
+#include "../Card/card.h"
 
-#include <iostream>
-#include <SDL.h>
-
-int main(int argc, char *argv[])
+void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
-    std::cout << "Hello World!\n";
+	int flags = 0;
+	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	{
+		window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+		renderer = SDL_CreateRenderer(window, -1, 0);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		isRunning = true;
+	}
+	else
+	{
+		isRunning = false;
+	}
 }
 
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
+void Game::handleEvents()
+{
+	SDL_Event event;
+	SDL_PollEvent(&event);
+	switch (event.type)
+	{
+	case SDL_QUIT:
+		isRunning = false;
+		break;
 
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln
+	default:
+		break;
+	}
+}
+
+void Game::update()
+{
+
+}
+
+void Game::render()
+{
+	SDL_RenderClear(renderer);
+	SDL_RenderPresent(renderer);
+}
+
+void Game::clean()
+{
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
+	SDL_Quit();
+
+
+}
+
+bool Game::running()
+{
+	return false;
+}
