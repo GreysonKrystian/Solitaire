@@ -27,4 +27,5 @@ public:
 	Deck(int cards_in_deck);
 	int getCardsLeft();
 	void addCard();
+	Card* drawRandomCard();
 };

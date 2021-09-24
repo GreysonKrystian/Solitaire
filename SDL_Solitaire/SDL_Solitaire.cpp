@@ -1,59 +1,39 @@
-﻿#include "SDL_Solitaire.h"
-#include "../Board/board.h"
-#include "../Card/card.h"
+﻿#pragma once
+#include "Game.h"
+#include <iostream>
 
-void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
+float window_width = 1600;
+float window_height = 800;
+int main()
 {
-	int flags = 0;
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	Game game(window_width, window_height, "solitaire");
+	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "solitaire");
+	sf::Event event;
+	sf::Texture background;
+	if (!background.loadFromFile("images/bacground.png"))
 	{
-		window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-		renderer = SDL_CreateRenderer(window, -1, 0);
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		isRunning = true;
+		return 0;
 	}
-	else
+	sf::Sprite background_sprite;
+	background_sprite.setTexture(background);
+	while (window.isOpen())
 	{
-		isRunning = false;
+
+
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+			{
+				window.close();
+			}
+		}
+		window.draw(background_sprite);
+		if (game.createPlayTiles(window))
+		{
+			return 0;
+		}
+		window.display();
 	}
-}
 
-void Game::handleEvents()
-{
-	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch (event.type)
-	{
-	case SDL_QUIT:
-		isRunning = false;
-		break;
-
-	default:
-		break;
-	}
-}
-
-void Game::update()
-{
-
-}
-
-void Game::render()
-{
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
-}
-
-void Game::clean()
-{
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
-	SDL_Quit();
-
-
-}
-
-bool Game::running()
-{
-	return false;
+	return 0;
 }

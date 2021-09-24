@@ -1,22 +1,51 @@
 #include "board.h"
-#include "../Card/card.h"
 
-class Tile
+
+std::vector<Card*> Tile::getCardsOnTile()
+	{
+		return cards_on_tile;
+	}
+
+void Board::dealTheCards()
 {
-	int cards_left;
-	std::vector<Card*> cards_on_tile;
-};
+	for (int i = 0; i < 7; i++)
+	{
+		for (int k = 0; k < i; k++)
+		{
+			tiles[i]->getCardsOnTile()[k] = deck.drawRandomCard();
+		}
+			
+	}
+}
 
-class Board
+void Board::getRevealedCards()
 {
-	std::vector<Tile*> tiles;
-	Deck deck;
-	Card revealed_card;
+	std::vector<Card*> cards;
+	for (auto itr = tiles.begin(); itr < tiles.end(); itr++)
+	{
+		if ((*itr)->getCardsOnTile().size() != 0)
+		{
+			cards.push_back((*itr)->getCardsOnTile().back());
+		}
+		else
+			cards.push_back(nullptr);
+	}
+}
 
-};
-
-class Pile
+bool Board::checkWinConditions()
 {
-	int number_of_cards_on_pile;
-	Card last_card;
-};
+	return false;
+}
+
+void Board::changeTileOfCard(Tile* previous_tile, Tile* new_tile)
+{
+	for (auto itr = tiles.begin(); itr < tiles.end(); itr++)
+	{
+
+	}
+}
+
+bool Board::checkIfChangeLegal()
+{
+	return false;
+}

@@ -34,8 +34,7 @@ void Deck::addCard()
 
 void Deck::shuffleDeck()
 {
-	auto rng = std::default_random_engine{};
-	std::random_shuffle(this->cardsList.begin(), this->cardsList.end(), rng);
+	std::random_shuffle(this->cardsList.begin(), this->cardsList.end(), [](int n) { return rand() % n; });
 }
 
 int Deck::removeCard()
@@ -56,4 +55,13 @@ int Deck::fillDeck()
 			addCard();
 		}
 	}
+}
+
+Card* Deck::drawRandomCard()
+{	
+	int random_value = 0;
+	Card* card = cardsList[random_value];
+	cardsList.erase(cardsList.begin() + random_value);
+	removeCard();
+	return card;
 }
