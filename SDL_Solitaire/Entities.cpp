@@ -1,5 +1,30 @@
-#include "card.h"
+#include "Entities.h"
 
+
+Card::Card(unsigned int image_indicator)
+{
+	std::vector<std::string> values = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
+	std::vector<std::string> colors = {"spades", "clubs", "diamonds", "hearts"};
+	for (auto values_itr = values.begin(); values_itr < values.end(); values_itr++)
+	{
+		for (auto colors_itr = colors.begin(); colors_itr < colors.end(); colors_itr++)
+		{
+			card_sprites.push_back("images/" + (*values_itr) + "_of_" + (*colors_itr) + ".png");
+		}
+	}
+	sf::Texture texture;
+	texture.loadFromFile(card_sprites[image_indicator]);
+	type_of_card.setTexture(texture);
+}
+
+void Card::moveCard()
+{
+}
+
+void Card::drawCard(sf::RenderWindow& window)
+{
+
+}
 
 std::string Card::getColor()
 {
@@ -15,12 +40,15 @@ Card::Card(std::string color, std::string value)
 {
 	color = color;
 	value = value;
-};
-
-Deck::Deck(int cards_in_deck = 0)
+}
+void Card::setPosition(sf::Vector2f given_position)
 {
-	cards_in_deck = cards_in_deck;
-};
+	position = given_position;
+}
+
+Deck::Deck()
+{
+}
 
 int Deck::getCardsLeft()
 {
@@ -58,10 +86,17 @@ int Deck::fillDeck()
 }
 
 Card* Deck::drawRandomCard()
-{	
+{
 	int random_value = 0;
 	Card* card = cardsList[random_value];
 	cardsList.erase(cardsList.begin() + random_value);
 	removeCard();
 	return card;
 }
+
+
+std::vector<Card*> Tile::getCardsOnTile()
+{
+	return cards_on_tile;
+}
+

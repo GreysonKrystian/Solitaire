@@ -6,11 +6,12 @@ float window_width = 1600;
 float window_height = 800;
 int main()
 {
-	Game game(window_width, window_height, "solitaire");
+	Board board;
+	Game game(window_width, window_height, "solitaire", board);
 	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "solitaire");
 	sf::Event event;
 	sf::Texture background;
-	if (!background.loadFromFile("images/bacground.png"))
+	if (!background.loadFromFile("images/background.png"))
 	{
 		return 0;
 	}
