@@ -13,7 +13,7 @@ class Card
 	unsigned int image_indicator;
 	std::vector<std::string> card_sprites{};
 public:
-	Card(unsigned int image_indicator);
+	Card(unsigned int image_indicator, std::string color, std::string value);
 	void moveCard();
 	void drawCard(sf::RenderWindow& window);
 	std::string getColor();
@@ -27,7 +27,7 @@ class Deck
 	int cards_in_deck;
 	void shuffleDeck();
 	int removeCard();
-	int fillDeck();
+	void fillDeck();
 	std::vector<Card*> cardsList;
 public:
 	Deck();
@@ -41,7 +41,9 @@ class Tile
 	int cards_left;
 	std::vector<Card*> cards_on_tile;
 public:
+	Tile();
 	std::vector<Card*> getCardsOnTile();
+	void addCardToTile(Card*);
 
 };
 

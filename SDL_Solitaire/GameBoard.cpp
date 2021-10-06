@@ -3,6 +3,17 @@
 
 Board::Board()
 {
+	Tile* tile_one = new Tile();
+	Tile* tile_two = new Tile();
+	Tile* tile_three = new Tile();
+	Tile* tile_four = new Tile();
+	Tile* tile_five = new Tile();
+	Tile* tile_six = new Tile();
+	Tile* tile_seven = new Tile();
+
+	tiles = {
+		tile_one, tile_two, tile_three, tile_four, tile_five, tile_six, tile_seven
+	};
 }
 
 void Board::dealTheCards(sf::RenderWindow& window)
@@ -11,7 +22,8 @@ void Board::dealTheCards(sf::RenderWindow& window)
 	{
 		for (int k = 0; k < i; k++)
 		{
-			tiles[i]->getCardsOnTile().push_back(deck.drawRandomCard());
+			Card* card = deck.drawRandomCard();
+			tiles[i]->addCardToTile(card);
 		}
 	}
 }
@@ -51,6 +63,6 @@ void Board::changeTileOfCard(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 bool Board::checkIfChangeLegal(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 {
 	// TODO
-
+	return 0;
 }
 

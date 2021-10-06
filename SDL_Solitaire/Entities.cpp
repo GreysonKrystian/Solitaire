@@ -70,7 +70,7 @@ int Deck::removeCard()
 	return Deck::getCardsLeft() - 1;
 }
 
-int Deck::fillDeck()
+void Deck::fillDeck()
 {
 	std::vector<std::string> possible_colors = { "Spades", "Clubs", "Diamonds", "Hearts" };
 	std::vector<std::string> possible_values = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
@@ -95,8 +95,17 @@ Card* Deck::drawRandomCard()
 }
 
 
+Tile::Tile()
+{
+}
+
 std::vector<Card*> Tile::getCardsOnTile()
 {
 	return cards_on_tile;
+}
+
+void Tile::addCardToTile(Card* card)
+{
+	cards_on_tile.push_back(card);
 }
 
