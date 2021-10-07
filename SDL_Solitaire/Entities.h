@@ -10,15 +10,13 @@ class Card
 	std::string value;
 	sf::Vector2f position;
 	sf::Sprite type_of_card;
-	unsigned int image_indicator;
 	std::vector<std::string> card_sprites{};
 public:
-	Card(unsigned int image_indicator, std::string color, std::string value);
+	Card(std::string color, std::string value);
 	void moveCard();
 	void drawCard(sf::RenderWindow& window);
 	std::string getColor();
 	std::string getValue();
-	Card(std::string color, std::string value);
 	void setPosition(sf::Vector2f given_position);
 };
 
@@ -26,9 +24,9 @@ class Deck
 {
 	int cards_in_deck;
 	void shuffleDeck();
-	int removeCard();
+	void removeCard();
 	void fillDeck();
-	std::vector<Card*> cardsList;
+	std::vector<Card*> cards_list;
 public:
 	Deck();
 	int getCardsLeft();

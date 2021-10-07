@@ -16,5 +16,6 @@ public:
 	void moveCardWithMouse();
 	void placeCardOnPile();
 	void createCards();
+	Board getBoard();
 };
 

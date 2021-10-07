@@ -20,10 +20,12 @@ void Board::dealTheCards(sf::RenderWindow& window)
 {
 	for (int i = 0; i < 7; i++)
 	{
-		for (int k = 0; k < i; k++)
+		for (int k = 0; k <= i; k++)
 		{
 			Card* card = deck.drawRandomCard();
 			tiles[i]->addCardToTile(card);
+			card->setPosition();
+			card->drawCard(window);
 		}
 	}
 }
