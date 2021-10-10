@@ -24,7 +24,13 @@ void Board::dealTheCards(sf::RenderWindow& window)
 		{
 			Card* card = deck.drawRandomCard();
 			tiles[i]->addCardToTile(card);
-			card->setPosition();
+			float x = 100 + i * 220;
+			float y = 250 + k * 30;
+			card->setPosition({ x, y });
+			if (k == i)
+			{
+				card->is_revealed = true;
+			}
 			card->drawCard(window);
 		}
 	}
@@ -62,9 +68,29 @@ void Board::changeTileOfCard(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 	}
 }
 
-bool Board::checkIfChangeLegal(Tile* old_tile, Tile* new_tile, Card* chosen_card)
+bool Board::checkIfChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card)
 {
-	// TODO
-	return 0;
+	// add to empty tile  TODO
+	// deal with king clicked
+	std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
+	if (std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) != (--std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile.back()->getValue())))
+	{
+		return false;
+	}
+	if (clicked_card->getColor() == "Spades" || clicked_card->getColor() == "Clubs")
+	{
+		if (new_tile->getCardsOnTile.back()->getColor() == "Spades" || new_tile->getCardsOnTile.back()->getColor() == "Clubs")
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (new_tile->getCardsOnTile.back()->getColor() == "Diamonds" || new_tile->getCardsOnTile.back()->getColor() == "Hearts")
+		{
+			return false;
+		}
+	}
+	return true;
 }
 

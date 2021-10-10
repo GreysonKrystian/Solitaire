@@ -29,11 +29,11 @@ int main()
 			}
 		}
 		window.draw(background_sprite);
-		game.getBoard().dealTheCards(window);
 		if (game.createPlayTiles(window))
 		{
 			return 0;
 		}
+		game.getBoard().dealTheCards(window);
 		window.display();
 	}
 

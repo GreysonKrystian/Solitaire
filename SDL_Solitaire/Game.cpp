@@ -26,7 +26,7 @@ bool Game::createPlayTiles(sf::RenderWindow &window)
 		frame_sprite.setPosition(x, 20);
 		window.draw(frame_sprite);
 	}
-	for (int x = 100; x <= 1500; x += 250)
+	for (int x = 100; x <= 1500; x += 220)
 	{
 		frame_sprite.setPosition(x, 250);
 		window.draw(frame_sprite);

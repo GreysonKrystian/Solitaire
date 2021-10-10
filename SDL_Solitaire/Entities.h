@@ -10,8 +10,8 @@ class Card
 	std::string value;
 	sf::Vector2f position;
 	sf::Sprite type_of_card;
-	std::vector<std::string> card_sprites{};
 public:
+	bool is_revealed;
 	Card(std::string color, std::string value);
 	void moveCard();
 	void drawCard(sf::RenderWindow& window);
@@ -27,7 +27,9 @@ class Deck
 	void removeCard();
 	void fillDeck();
 	std::vector<Card*> cards_list;
+	sf::Sprite card_back;
 public:
+	sf::Sprite getCardBack();
 	Deck();
 	int getCardsLeft();
 	void addCard();

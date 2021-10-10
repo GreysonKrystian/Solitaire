@@ -3,28 +3,26 @@
 
 Card::Card(std::string color, std::string value)
 {
-	color = color;
-	value = value;
-	//std::vector<std::string> values = {"two", "three", "four", "five", "six", "seven", "eight", "9", "10", "jack", "queen", "king", "ace"};
-	//std::vector<std::string> colors = {"spades", "clubs", "diamonds", "hearts"};
-	//for (auto values_itr = values.begin(); values_itr < values.end(); values_itr++)
-	//{
-	//	for (auto colors_itr = colors.begin(); colors_itr < colors.end(); colors_itr++)
-	//	{
-	//		card_sprites.push_back("images/" + (*values_itr) + "_of_" + (*colors_itr) + ".png");
-	//	}
-	//}
-	sf::Texture texture;
-	texture.loadFromFile("images/" + value + "_of_" + color + ".png");
-	type_of_card.setTexture(texture);
+	this->color = color;
+	this->value = value;
+	type_of_card.setScale(0.25, 0.25);
+	this->is_revealed = false;
 }
 
 void Card::moveCard()
 {
 }
 
+
 void Card::drawCard(sf::RenderWindow& window)
 {
+	sf::Texture texture;
+	if (is_revealed)
+		texture.loadFromFile("images/" + value + "_of_" + color + ".png");
+	else
+		texture.loadFromFile("card_back/basic.jpg");
+	type_of_card.setTexture(texture);
+	type_of_card.setPosition(position);
 	window.draw(type_of_card);
 }
 
@@ -42,6 +40,11 @@ std::string Card::getValue()
 void Card::setPosition(sf::Vector2f given_position)
 {
 	position = given_position;
+}
+
+sf::Sprite Deck::getCardBack()
+{
+	return card_back;
 }
 
 Deck::Deck()
