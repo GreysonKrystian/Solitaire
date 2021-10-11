@@ -15,7 +15,7 @@ public:
 	void placeCards(sf::RenderWindow &window);
 	void moveCardWithMouse();
 	void placeCardOnPile();
-	void createCards();
+	void createBackground(sf::RenderWindow& window);
 	Board getBoard();
 };
 

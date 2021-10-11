@@ -11,6 +11,7 @@ class Board
 	std::vector<Card*> revealed_cards;
 public:
 	Board();
+	std::vector<Tile*> getTiles();
 	void dealTheCards(sf::RenderWindow& window);
 	std::vector<Card*> getRevealedCards();
 	bool checkWinConditions();

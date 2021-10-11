@@ -44,9 +44,16 @@ void Game::placeCards(sf::RenderWindow &window)
 //	if (card in )
 //}
 
-void Game::createCards()
+bool Game::createBackground(sf::RenderWindow& window)
 {
-
+	sf::Texture background;
+	if (!background.loadFromFile("images/background.png"))
+	{
+		return 0;
+	}
+	sf::Sprite background_sprite;
+	background_sprite.setTexture(background);
+	window.draw(background_sprite);
 }
 
 Board Game::getBoard()

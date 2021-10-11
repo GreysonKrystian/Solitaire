@@ -1,6 +1,20 @@
 #include "Entities.h"
 
 
+std::vector<sf::Vector2f> Card::getReveledPart()
+{
+	std::vector<sf::Vector2f> revealed;
+	if (is_on_top)
+	{
+		revealed = { position[0], {position[0].x + 0, position[1].y + 0} }; //TODO
+	}
+	else
+	{
+		revealed = { position[0], position[3] };
+	}
+	return revealed;
+}
+
 Card::Card(std::string color, std::string value)
 {
 	this->color = color;
@@ -22,7 +36,7 @@ void Card::drawCard(sf::RenderWindow& window)
 	else
 		texture.loadFromFile("card_back/basic.jpg");
 	type_of_card.setTexture(texture);
-	type_of_card.setPosition(position);
+	type_of_card.setPosition(position[0]);
 	window.draw(type_of_card);
 }
 
@@ -37,9 +51,9 @@ std::string Card::getValue()
 };
 
 
-void Card::setPosition(sf::Vector2f given_position)
+void Card::setPosition(sf::Vector2f left_upper_corner, sf::Vector2f left_lower_corner, sf::Vector2f right_upper_corner, sf::Vector2f right_lower_corner)
 {
-	position = given_position;
+	position = {left_upper_corner, left_lower_corner, right_upper_corner, right_lower_corner};
 }
 
 sf::Sprite Deck::getCardBack()
