@@ -44,7 +44,7 @@ class Tile
 	std::vector<Card*> cards_on_tile;
 public:
 	Tile();
-	std::vector<Card*> getCardsOnTile();
+	std::vector<Card*> &getCardsOnTile();
 	void addCardToTile(Card*);
 
 };

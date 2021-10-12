@@ -6,7 +6,7 @@ std::vector<sf::Vector2f> Card::getReveledPart()
 	std::vector<sf::Vector2f> revealed;
 	if (is_on_top)
 	{
-		revealed = { position[0], {position[0].x + 0, position[1].y + 0} }; //TODO
+		revealed = { position[0], {position[0].x + 30, position[1].y + 30} }; //TODO
 	}
 	else
 	{
@@ -227,7 +227,7 @@ Tile::Tile()
 {
 }
 
-std::vector<Card*> Tile::getCardsOnTile()
+std::vector<Card*> &Tile::getCardsOnTile()
 {
 	return cards_on_tile;
 }

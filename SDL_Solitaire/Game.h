@@ -10,12 +10,12 @@ private:
 	std::vector<Card*> cards;
 	Board board;
 public:
-	Game(float window_width, float window_height, std::string name, Board board);
+	Game(float window_width, float window_height, std::string name, Board& board);
 	bool createPlayTiles(sf::RenderWindow &window);
 	void placeCards(sf::RenderWindow &window);
 	void moveCardWithMouse();
 	void placeCardOnPile();
-	void createBackground(sf::RenderWindow& window);
-	Board getBoard();
+	bool createBackground(sf::RenderWindow& window);
+	Board& getBoard();
 };
 

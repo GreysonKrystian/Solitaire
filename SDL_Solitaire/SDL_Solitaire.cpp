@@ -10,20 +10,18 @@ int main()
 	Game game(window_width, window_height, "solitaire", board);
 	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "solitaire");
 	sf::Event event;
-
+	game.getBoard().dealTheCards(window);
 	while (window.isOpen())
 	{
-
-
 		while (window.pollEvent(event))
 		{
-			for (auto itr = board.getTiles().begin(); itr < board.getTiles().end(); itr++)
+			for (auto itr = game.getBoard().getTiles().begin(); itr != game.getBoard().getTiles().end(); itr++)
 			{
-				for (auto iter = (*itr)->getCardsOnTile().begin(); iter < (*itr)->getCardsOnTile().end(); iter++)
+				for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
 				{
-					if (event.type == sf::Event::MouseLeft && float(sf::Mouse::getPosition(window).x >= (*iter)->getReveledPart()[0] &&
-						float(sf::Mouse::getPosition(window).x) <= ((*iter)->getReveledPart()[0] + 125.0f) && float(sf::Mouse::getPosition(window).y) >= (*iter)->getReveledPart()[1] &&
-						sf::Mouse::getPosition(window).y <= float((*iter)->getReveledPart()[1] + 181.5f)))
+					if (event.type == sf::Event::MouseLeft && float(sf::Mouse::getPosition(window).x >= (*iter)->getReveledPart()[0].x &&
+						float(sf::Mouse::getPosition(window).x) <= ((*iter)->getReveledPart()[1].x) && float(sf::Mouse::getPosition(window).y) >= (*iter)->getReveledPart()[0].y &&
+						sf::Mouse::getPosition(window).y <= float((*iter)->getReveledPart()[1].y)))
 					{
 						std::cout << (*iter)->getValue() << ", " << (*iter)->getColor();
 					};
@@ -41,7 +39,6 @@ int main()
 		{
 			return 0;
 		}
-		game.getBoard().dealTheCards(window);
 		window.display();
 	}
 

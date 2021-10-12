@@ -16,9 +16,17 @@ Board::Board()
 	};
 }
 
-std::vector<Tile*> Board::getTiles()
+std::vector<Tile*> &Board::getTiles()
 {
 	return tiles;
+}
+
+std::vector<Card*>& Board::getCardsOnBoard()
+{
+	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
+	{
+
+	}
 }
 
 void Board::dealTheCards(sf::RenderWindow& window)
@@ -36,7 +44,6 @@ void Board::dealTheCards(sf::RenderWindow& window)
 			{
 				card->is_revealed = true;
 			}
-			card->drawCard(window);
 		}
 	}
 }

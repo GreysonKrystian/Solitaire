@@ -1,12 +1,11 @@
 #include "Game.h"
 
-Game::Game(float window_width, float window_height, std::string name, Board board)
+Game::Game(float window_width, float window_height, std::string name, Board& board)
 {
 	this->name = name;
 	this->window_width = window_width;
 	this->window_height = window_height;
 	board = board;
-	createCards();
 }
 
 bool Game::createPlayTiles(sf::RenderWindow &window)
@@ -36,6 +35,8 @@ bool Game::createPlayTiles(sf::RenderWindow &window)
 
 void Game::placeCards(sf::RenderWindow &window)
 {
+	for (auto itr = board.getTiles();)
+	card->drawCard(window);
 }
 
 //void Game::moveCardWithMouse(Card* card) TODO
@@ -56,7 +57,7 @@ bool Game::createBackground(sf::RenderWindow& window)
 	window.draw(background_sprite);
 }
 
-Board Game::getBoard()
+Board& Game::getBoard()
 {
 	return board;
 }
