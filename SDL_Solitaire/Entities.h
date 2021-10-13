@@ -12,6 +12,8 @@ class Card
 	sf::Sprite type_of_card;
 	bool is_on_top;
 public:
+	sf::Sprite &getCardSprite();
+	void changeIsOnTopState();
 	bool is_revealed;
 	std::vector<sf::Vector2f> getReveledPart();
 	Card(std::string color, std::string value);
@@ -19,7 +21,7 @@ public:
 	void drawCard(sf::RenderWindow& window);
 	std::string getColor();
 	std::string getValue();
-	void setPosition(sf::Vector2f left_upper_corner, sf::Vector2f left_lower_corner, sf::Vector2f right_upper_corner, sf::Vector2f right_lower_corner);
+	void setPosition(sf::Vector2f left_upper_corner, sf::Vector2f right_lower_corner);
 };
 
 class Deck

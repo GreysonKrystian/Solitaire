@@ -7,7 +7,6 @@ private:
 	float window_width;
 	float window_height;
 	std::string name;
-	std::vector<Card*> cards;
 	Board board;
 public:
 	Game(float window_width, float window_height, std::string name, Board& board);

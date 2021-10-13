@@ -21,13 +21,15 @@ std::vector<Tile*> &Board::getTiles()
 	return tiles;
 }
 
-std::vector<Card*>& Board::getCardsOnBoard()
-{
-	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
-	{
 
-	}
-}
+
+//std::vector<Card*>& Board::getCardsOnBoard()
+//{
+//	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
+//	{
+//
+//	}
+//}
 
 void Board::dealTheCards(sf::RenderWindow& window)
 {
@@ -39,10 +41,11 @@ void Board::dealTheCards(sf::RenderWindow& window)
 			tiles[i]->addCardToTile(card);
 			float x = 100 + i * 220;
 			float y = 250 + k * 30;
-			card->setPosition({ x, y }, {x, y+181.5f}, {x+125.0f,y}, {x+125.0f,y + 181.5f });
+			card->setPosition({ x, y }, {x+125.0f, y + 181.5f });
 			if (k == i)
 			{
 				card->is_revealed = true;
+				card->changeIsOnTopState();
 			}
 		}
 	}

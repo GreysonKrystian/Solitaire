@@ -1,20 +1,5 @@
 #include "Entities.h"
 
-
-std::vector<sf::Vector2f> Card::getReveledPart()
-{
-	std::vector<sf::Vector2f> revealed;
-	if (is_on_top)
-	{
-		revealed = { position[0], {position[0].x + 30, position[1].y + 30} }; //TODO
-	}
-	else
-	{
-		revealed = { position[0], position[3] };
-	}
-	return revealed;
-}
-
 Card::Card(std::string color, std::string value)
 {
 	this->color = color;
@@ -23,10 +8,36 @@ Card::Card(std::string color, std::string value)
 	this->is_revealed = false;
 }
 
+void Card::changeIsOnTopState()
+{
+	if (is_on_top == true)
+		is_on_top = false;
+	if (is_on_top == false)
+		is_on_top = true;
+}
+
+std::vector<sf::Vector2f> Card::getReveledPart()
+{
+	std::vector<sf::Vector2f> revealed;
+	if (!is_on_top)
+	{
+		revealed = { position[0], {position[1].x, position[0].y + 30} }; //TODO
+	}
+	else
+	{
+		revealed = { position[0], position[1] };
+	}
+	return revealed;
+}
+
+void Card::setPosition(sf::Vector2f left_upper_corner, sf::Vector2f right_lower_corner)
+{
+	position = { left_upper_corner, right_lower_corner };
+}
+
 void Card::moveCard()
 {
 }
-
 
 void Card::drawCard(sf::RenderWindow& window)
 {
@@ -51,9 +62,9 @@ std::string Card::getValue()
 };
 
 
-void Card::setPosition(sf::Vector2f left_upper_corner, sf::Vector2f left_lower_corner, sf::Vector2f right_upper_corner, sf::Vector2f right_lower_corner)
+sf::Sprite& Card::getCardSprite()
 {
-	position = {left_upper_corner, left_lower_corner, right_upper_corner, right_lower_corner};
+	return type_of_card;
 }
 
 sf::Sprite Deck::getCardBack()
@@ -213,9 +224,9 @@ void Deck::fillDeck()
 	cards_in_deck = 52;
 }
 
-Card* Deck::drawRandomCard()
+Card* Deck::drawRandomCard() // wtf 
 {
-	int random_value = 0;
+	int random_value = rand() % cards_list.size();
 	Card* card = cards_list[random_value];
 	cards_list.erase(cards_list.begin() + random_value);
 	removeCard();

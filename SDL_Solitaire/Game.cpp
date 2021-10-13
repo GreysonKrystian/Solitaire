@@ -20,12 +20,12 @@ bool Game::createPlayTiles(sf::RenderWindow &window)
 	frame_sprite.setScale(0.25, 0.25);
 	frame_sprite.setPosition(100, 20);
 	window.draw(frame_sprite);
-	for (int x = 600; x <= 1350; x += 250)
+	for (float x = 600; x <= 1350; x += 250)
 	{
 		frame_sprite.setPosition(x, 20);
 		window.draw(frame_sprite);
 	}
-	for (int x = 100; x <= 1500; x += 220)
+	for (float x = 100; x <= 1500; x += 220)
 	{
 		frame_sprite.setPosition(x, 250);
 		window.draw(frame_sprite);
@@ -35,8 +35,14 @@ bool Game::createPlayTiles(sf::RenderWindow &window)
 
 void Game::placeCards(sf::RenderWindow &window)
 {
-	for (auto itr = board.getTiles();)
-	card->drawCard(window);
+	for (auto itr = board.getTiles().begin(); itr != board.getTiles().end(); itr++)
+	{
+		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
+		{
+			(*iter)->drawCard(window);
+		}
+	}
+	
 }
 
 //void Game::moveCardWithMouse(Card* card) TODO
@@ -62,3 +68,7 @@ Board& Game::getBoard()
 	return board;
 }
 
+//void Game::update(sf::Time dt)
+//{
+
+//}
