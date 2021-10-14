@@ -27,10 +27,10 @@ int main()
 	{
 		(*itr)->texture.loadFromFile("images/" + (*itr)->getValue() + "_of_" + (*itr)->getColor() + ".png");
 	}
-	
 	while (window.isOpen())
 	{
-		game.update(window);
+		game.update(window, game.background_sprite, game.frame_sprite);
+		game.updateCards(window, {});
 		window.display();
 		while (window.pollEvent(event))
 		{
@@ -59,8 +59,9 @@ int main()
 							//(*iter)->getCardSprite().setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 							//(*iter)->getCardSprite().setOrigin(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 
-							//(*iter)->getCardSprite().setPosition(500, 500);
-							game.update(window);
+							//(*iter)->getCardSprite().setPosition(500, 500); 
+							game.update(window, game.background_sprite, game.frame_sprite);
+							game.updateCards(window);
 							(*iter)->drawCard(window, true);
 							window.display();
 							

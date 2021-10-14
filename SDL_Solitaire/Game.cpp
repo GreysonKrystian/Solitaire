@@ -6,40 +6,47 @@ Game::Game(float window_width, float window_height, std::string name, Board& boa
 	this->window_width = window_width;
 	this->window_height = window_height;
 	board = board;
-}
 
-bool Game::createPlayTiles(sf::RenderWindow &window)
-{
-	sf::Texture frame;
-	if (!frame.loadFromFile("images/frame.png"))
-	{
-		return 1;
-	}
-	sf::Sprite frame_sprite;
+
+	background.loadFromFile("images/background.png");
+	background_sprite.setTexture(background);
+
+	frame.loadFromFile("images/frame.png");
 	frame_sprite.setTexture(frame);
 	frame_sprite.setScale(0.25, 0.25);
-	frame_sprite.setPosition(100, 20);
-	window.draw(frame_sprite);
-	for (float x = 600; x <= 1350; x += 250)
-	{
-		frame_sprite.setPosition(x, 20);
-		window.draw(frame_sprite);
-	}
-	for (float x = 100; x <= 1500; x += 220)
-	{
-		frame_sprite.setPosition(x, 250);
-		window.draw(frame_sprite);
-	}
-	return 0;
 }
 
-
-void Game::update(sf::RenderWindow& window)
-{
-	createBackground(window);
-	createPlayTiles(window);
-	placeCards(window);
-}
+//bool Game::createPlayTiles(sf::RenderWindow &window)
+//{
+//	sf::Texture frame;
+//	if (!frame.loadFromFile("images/frame.png"))
+//	{
+//		return 1;
+//	}
+//	frame_sprite.setTexture(frame);
+//	frame_sprite.setScale(0.25, 0.25);
+//	frame_sprite.setPosition(100, 20);
+//	//window.draw(frame_sprite);
+//	for (float x = 600; x <= 1350; x += 250)
+//	{
+//		frame_sprite.setPosition(x, 20);
+//		//window.draw(frame_sprite);
+//	}
+//	for (float x = 100; x <= 1500; x += 220)
+//	{
+//		frame_sprite.setPosition(x, 250);
+//		//window.draw(frame_sprite);
+//	}
+//	return 0;
+//}
+//
+//
+//void Game::update(sf::RenderWindow& window)
+//{
+//	createBackground(window);
+//	createPlayTiles(window);
+//	placeCards(window);
+//}
 
 void Game::placeCards(sf::RenderWindow &window)
 {
@@ -59,22 +66,24 @@ void Game::placeCards(sf::RenderWindow &window)
 //	if (card in )
 //}
 
-bool Game::createBackground(sf::RenderWindow& window)
-{
-	sf::Texture background;
-	if (!background.loadFromFile("images/background.png"))
-	{
-		return 0;
-	}
-	sf::Sprite background_sprite;
-	background_sprite.setTexture(background);
-	window.draw(background_sprite);
-}
+//bool Game::createBackground(sf::RenderWindow& window)
+//{
+//	sf::Texture background;
+//	if (!background.loadFromFile("images/background.png"))
+//	{
+//		return 0;
+//	}
+//	background_sprite.setTexture(background);
+//	//window.draw(background_sprite);
+//}
 
-void Game::testUpdate(sf::RenderWindow& window,sf::Sprite& background_sprite, sf::Sprite& frame_sprite, )
+void Game::update(sf::RenderWindow& window,sf::Sprite& background_sprite, sf::Sprite& frame_sprite)
 {
 	window.draw(background_sprite);
 
+
+	frame_sprite.setPosition(100, 20);
+	window.draw(frame_sprite);
 	for (float x = 600; x <= 1350; x += 250)
 	{
 		frame_sprite.setPosition(x, 20);
@@ -85,7 +94,11 @@ void Game::testUpdate(sf::RenderWindow& window,sf::Sprite& background_sprite, sf
 		frame_sprite.setPosition(x, 250);
 		window.draw(frame_sprite);
 	}
+}
 
+
+void Game::updateCards(sf::RenderWindow& window, std::vector<Card*> currently_moved_cards)
+{
 	for (auto itr = board.getTiles().begin(); itr != board.getTiles().end(); itr++)
 	{
 		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
