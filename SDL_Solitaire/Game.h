@@ -11,6 +11,7 @@ private:
 public:
 	Game(float window_width, float window_height, std::string name, Board& board);
 	bool createPlayTiles(sf::RenderWindow &window);
+	void update(sf::RenderWindow& window);
 	void placeCards(sf::RenderWindow &window);
 	void moveCardWithMouse();
 	void placeCardOnPile();

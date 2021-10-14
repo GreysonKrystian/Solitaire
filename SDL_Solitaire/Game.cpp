@@ -33,13 +33,21 @@ bool Game::createPlayTiles(sf::RenderWindow &window)
 	return 0;
 }
 
+
+void Game::update(sf::RenderWindow& window)
+{
+	createBackground(window);
+	createPlayTiles(window);
+	placeCards(window);
+}
+
 void Game::placeCards(sf::RenderWindow &window)
 {
 	for (auto itr = board.getTiles().begin(); itr != board.getTiles().end(); itr++)
 	{
 		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
 		{
-			(*iter)->drawCard(window);
+			(*iter)->drawCard(window, false);
 		}
 	}
 	
@@ -62,6 +70,31 @@ bool Game::createBackground(sf::RenderWindow& window)
 	background_sprite.setTexture(background);
 	window.draw(background_sprite);
 }
+
+void Game::testUpdate(sf::RenderWindow& window,sf::Sprite& background_sprite, sf::Sprite& frame_sprite, )
+{
+	window.draw(background_sprite);
+
+	for (float x = 600; x <= 1350; x += 250)
+	{
+		frame_sprite.setPosition(x, 20);
+		window.draw(frame_sprite);
+	}
+	for (float x = 100; x <= 1500; x += 220)
+	{
+		frame_sprite.setPosition(x, 250);
+		window.draw(frame_sprite);
+	}
+
+	for (auto itr = board.getTiles().begin(); itr != board.getTiles().end(); itr++)
+	{
+		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
+		{
+			(*iter)->drawCard(window, false);
+		}
+	}
+}
+
 
 Board& Game::getBoard()
 {

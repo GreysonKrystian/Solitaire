@@ -8,17 +8,19 @@ class Card
 {
 	std::string color;
 	std::string value;
-	std::vector<sf::Vector2f> position; // left upper, left lower, right upper, right lower
+	std::vector<sf::Vector2f> position; // left upper,  right lower
 	sf::Sprite type_of_card;
 	bool is_on_top;
 public:
+	sf::Texture texture;
 	sf::Sprite &getCardSprite();
 	void changeIsOnTopState();
+	bool checkIfIsOnTop();
 	bool is_revealed;
 	std::vector<sf::Vector2f> getReveledPart();
 	Card(std::string color, std::string value);
 	void moveCard();
-	void drawCard(sf::RenderWindow& window);
+	void drawCard(sf::RenderWindow& window, bool move_mouse);
 	std::string getColor();
 	std::string getValue();
 	void setPosition(sf::Vector2f left_upper_corner, sf::Vector2f right_lower_corner);

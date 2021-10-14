@@ -6,6 +6,7 @@ Card::Card(std::string color, std::string value)
 	this->value = value;
 	type_of_card.setScale(0.25, 0.25);
 	this->is_revealed = false;
+	texture.loadFromFile("card_back/basic.jpg");
 }
 
 void Card::changeIsOnTopState()
@@ -14,6 +15,11 @@ void Card::changeIsOnTopState()
 		is_on_top = false;
 	if (is_on_top == false)
 		is_on_top = true;
+}
+
+bool Card::checkIfIsOnTop()
+{
+	return is_on_top;
 }
 
 std::vector<sf::Vector2f> Card::getReveledPart()
@@ -39,15 +45,13 @@ void Card::moveCard()
 {
 }
 
-void Card::drawCard(sf::RenderWindow& window)
+void Card::drawCard(sf::RenderWindow& window, bool move_mouse)
 {
-	sf::Texture texture;
-	if (is_revealed)
-		texture.loadFromFile("images/" + value + "_of_" + color + ".png");
-	else
-		texture.loadFromFile("card_back/basic.jpg");
 	type_of_card.setTexture(texture);
-	type_of_card.setPosition(position[0]);
+	if (!move_mouse)
+		type_of_card.setPosition(position[0]);
+	else
+		type_of_card.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 	window.draw(type_of_card);
 }
 

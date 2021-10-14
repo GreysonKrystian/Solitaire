@@ -13,8 +13,9 @@ public:
 	Board();
 	std::vector<Tile*> &getTiles();
 	std::vector<Card*>& getCardsOnBoard();
-	void dealTheCards(sf::RenderWindow& window);
-	std::vector<Card*> getRevealedCards();
+	void dealTheCards();
+	std::vector<Card*>& getRevealedCards();
+	void setRevealedCards();
 	bool checkWinConditions();
 	void changeTileOfCard(Tile* old_tile, Tile* new_tile, Card* chosen_card);
 	bool checkIfChangeLegal(Tile* old_tile, Tile* new_tile, Card* chosen_card);

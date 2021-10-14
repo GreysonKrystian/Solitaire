@@ -9,19 +9,29 @@ int main()
 	Board board;
 	Game game(window_width, window_height, "solitaire", board);
 	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "solitaire");
-	window.setVerticalSyncEnabled(true);
+	//window.setFramerateLimit(60);
+	//window.setVerticalSyncEnabled(true);
 	sf::Event event;
-	game.getBoard().dealTheCards(window);
+	game.getBoard().dealTheCards();
+
 
 	sf::Sprite test;
-	sf::Texture texture;
-	texture.loadFromFile("card_back/basic.jpg");
-	test.setTexture(texture);
+	sf::Texture texture2;
+	texture2.loadFromFile("card_back/basic.jpg");
+	test.setTexture(texture2);
 	test.setScale(0.25, 0.25);
 	test.setPosition(500,500);
 
+	game.getBoard().setRevealedCards();
+	for (auto itr = game.getBoard().getRevealedCards().begin(); itr != game.getBoard().getRevealedCards().end(); itr++)
+	{
+		(*itr)->texture.loadFromFile("images/" + (*itr)->getValue() + "_of_" + (*itr)->getColor() + ".png");
+	}
+	
 	while (window.isOpen())
 	{
+		game.update(window);
+		window.display();
 		while (window.pollEvent(event))
 		{
 			for (auto itr = game.getBoard().getTiles().begin(); itr != game.getBoard().getTiles().end(); itr++)
@@ -44,11 +54,16 @@ int main()
 					{
 						while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 						{
+							window.clear();
 							//std::cout << (*iter)->getValue() << " of " << (*iter)->getColor() << std::endl;
 							//(*iter)->getCardSprite().setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-							(*iter)->getCardSprite().setPosition(500, 500);
-							window.draw((*iter)->getCardSprite());
+							//(*iter)->getCardSprite().setOrigin(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+
+							//(*iter)->getCardSprite().setPosition(500, 500);
+							game.update(window);
+							(*iter)->drawCard(window, true);
 							window.display();
+							
 						}
 					}
 				}
@@ -59,13 +74,12 @@ int main()
 			}
 		}
 		//std::cout << sf::Mouse::getPosition(window).x << ", " << sf::Mouse::getPosition(window).y << std::endl;
-		game.createBackground(window);
-		if (game.createPlayTiles(window))
-		{
-			return 0;
-		}
-		game.placeCards(window);
-		window.display();
+		//game.createBackground(window);
+		//if (game.createPlayTiles(window))
+		//{
+		//	return 0;
+		//}
+		//game.placeCards(window);
 	}
 
 	return 0;

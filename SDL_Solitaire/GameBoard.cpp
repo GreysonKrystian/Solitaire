@@ -23,15 +23,20 @@ std::vector<Tile*> &Board::getTiles()
 
 
 
-//std::vector<Card*>& Board::getCardsOnBoard()
-//{
-//	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
-//	{
-//
-//	}
-//}
+std::vector<Card*>& Board::getCardsOnBoard()
+{
+	std::vector<Card*> cards;
+	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
+	{
+		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
+		{
+			cards.push_back((*iter));
+		}
+	}
+	return cards;
+}
 
-void Board::dealTheCards(sf::RenderWindow& window)
+void Board::dealTheCards()
 {
 	for (int i = 0; i < 7; i++)
 	{
@@ -51,19 +56,24 @@ void Board::dealTheCards(sf::RenderWindow& window)
 	}
 }
 
-std::vector<Card*> Board::getRevealedCards()
+std::vector<Card*>& Board::getRevealedCards()
 {
-	std::vector<Card*> cards;
-	for (auto itr = tiles.begin(); itr < tiles.end(); itr++)
+	return revealed_cards;
+}
+
+void Board::setRevealedCards() // syf
+{
+
+	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
 	{
-		if ((*itr)->getCardsOnTile().size() != 0)
+		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
 		{
-			cards.push_back((*itr)->getCardsOnTile().back());
+			if ((*iter)->checkIfIsOnTop())
+			{
+				revealed_cards.push_back((*iter));
+			}
 		}
-		else
-			cards.push_back(nullptr);
 	}
-	return cards;
 }
 
 bool Board::checkWinConditions()
