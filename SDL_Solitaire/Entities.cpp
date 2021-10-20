@@ -22,7 +22,12 @@ bool Card::checkIfIsOnTop()
 	return is_on_top;
 }
 
-std::vector<sf::Vector2f> Card::getReveledPart()
+bool Card::checkIfIsRevealed()
+{
+	return is_revealed;
+}
+
+std::vector<sf::Vector2f> Card::getRevealedPartPosition()
 {
 	std::vector<sf::Vector2f> revealed;
 	if (!is_on_top)
@@ -69,6 +74,14 @@ std::string Card::getValue()
 sf::Sprite& Card::getCardSprite()
 {
 	return type_of_card;
+}
+
+void Card::changeIsRevealedState()
+{
+	if (is_revealed == true)
+		is_revealed = false;
+	if (is_revealed == false)
+		is_revealed = true;
 }
 
 sf::Sprite Deck::getCardBack()

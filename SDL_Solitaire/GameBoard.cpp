@@ -49,16 +49,24 @@ void Board::dealTheCards()
 			card->setPosition({ x, y }, {x+125.0f, y + 181.5f });
 			if (k == i)
 			{
-				card->is_revealed = true;
+				card->changeIsRevealedState();
 				card->changeIsOnTopState();
 			}
 		}
 	}
 }
 
-std::vector<Card*>& Board::getRevealedCards()
+std::vector<Card*>& Board::getCardsOnTopOfTiles()
 {
-	return revealed_cards;
+	std::vector<Card*> cards_on_top;
+	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
+	{
+		if ((*itr)->getCardsOnTile().size() != 0)
+			cards_on_top.push_back((*itr)->getCardsOnTile().back());
+		else
+			cards_on_top.push_back(nullptr);
+	}
+	return cards_on_top;
 }
 
 void Board::setRevealedCards() // syf
@@ -76,10 +84,6 @@ void Board::setRevealedCards() // syf
 	}
 }
 
-bool Board::checkWinConditions()
-{
-	return false; //TODO
-}
 
 void Board::changeTileOfCard(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 {
@@ -93,12 +97,12 @@ void Board::changeTileOfCard(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 	}
 }
 
-bool Board::checkIfChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card)
+bool Board::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card)
 {
 	// add to empty tile  TODO
 	// deal with king clicked
 	std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
-	if (std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) != (--std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue())))
+	if (std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) != (std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue())))
 	{
 		return false;
 	}

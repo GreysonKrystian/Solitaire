@@ -15,15 +15,8 @@ int main()
 	game.getBoard().dealTheCards();
 
 
-	sf::Sprite test;
-	sf::Texture texture2;
-	texture2.loadFromFile("card_back/basic.jpg");
-	test.setTexture(texture2);
-	test.setScale(0.25, 0.25);
-	test.setPosition(500,500);
-
 	game.getBoard().setRevealedCards();
-	for (auto itr = game.getBoard().getRevealedCards().begin(); itr != game.getBoard().getRevealedCards().end(); itr++)
+	for (auto itr = game.getBoard().getCardsOnTopOfTiles().begin(); itr != game.getBoard().getCardsOnTopOfTiles().end(); itr++)
 	{
 		(*itr)->texture.loadFromFile("images/" + (*itr)->getValue() + "_of_" + (*itr)->getColor() + ".png");
 	}
@@ -48,9 +41,9 @@ int main()
 					//auto h = float((*iter)->getReveledPart()[1].y);
 
 
-					if ((event.mouseButton.button == sf::Mouse::Left) && (float(sf::Mouse::getPosition(window).x) >= (*iter)->getReveledPart()[0].x) &&
-						(float(sf::Mouse::getPosition(window).x) <= (*iter)->getReveledPart()[1].x) && (float(sf::Mouse::getPosition(window).y) >= (*iter)->getReveledPart()[0].y) &&
-						(sf::Mouse::getPosition(window).y <= float((*iter)->getReveledPart()[1].y)))
+					if ((event.mouseButton.button == sf::Mouse::Left) && (float(sf::Mouse::getPosition(window).x) >= (*iter)->getRevealedPartPosition()[0].x) &&
+						(float(sf::Mouse::getPosition(window).x) <= (*iter)->getRevealedPartPosition()[1].x) && (float(sf::Mouse::getPosition(window).y) >= (*iter)->getRevealedPartPosition()[0].y) 
+						&&(sf::Mouse::getPosition(window).y <= float((*iter)->getRevealedPartPosition()[1].y)) && (*iter)->checkIfIsRevealed())
 					{
 						while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 						{
@@ -61,9 +54,14 @@ int main()
 
 							//(*iter)->getCardSprite().setPosition(500, 500); 
 							game.update(window, game.background_sprite, game.frame_sprite);
-							game.updateCards(window);
+							game.updateCards(window, { (*iter) });
 							(*iter)->drawCard(window, true);
 							window.display();
+							if (event.type == sf::Event::MouseButtonReleased && game.checkIfReleasedCardsInArea(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y) 
+								&& game.getBoard().isTileChangeLegal((*itr),(),(*iter)))
+							{
+
+							}
 							
 						}
 					}

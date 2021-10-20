@@ -11,6 +11,7 @@ private:
 	sf::Texture background;
 	sf::Texture frame;
 public:
+	bool checkWinConditions();
 	sf::Sprite background_sprite;
 	sf::Sprite frame_sprite;
 	Game(float window_width, float window_height, std::string name, Board& board);
@@ -21,6 +22,7 @@ public:
 	//bool createBackground(sf::RenderWindow& window);
 	void update(sf::RenderWindow& window, sf::Sprite& background_sprite, sf::Sprite& frame_sprite);
 	void updateCards(sf::RenderWindow& window, std::vector<Card*> currently_moved_cards);
+	bool checkIfReleasedCardsInArea(float mouse_pos_x, float mouse_pos_y);
 	Board& getBoard();
 };
 

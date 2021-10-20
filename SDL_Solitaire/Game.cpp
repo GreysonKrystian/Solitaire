@@ -1,5 +1,6 @@
 #include "Game.h"
 
+
 Game::Game(float window_width, float window_height, std::string name, Board& board)
 {
 	this->name = name;
@@ -16,6 +17,10 @@ Game::Game(float window_width, float window_height, std::string name, Board& boa
 	frame_sprite.setScale(0.25, 0.25);
 }
 
+Board& Game::getBoard()
+{
+	return board;
+}
 //bool Game::createPlayTiles(sf::RenderWindow &window)
 //{
 //	sf::Texture frame;
@@ -77,6 +82,7 @@ void Game::placeCards(sf::RenderWindow &window)
 //	//window.draw(background_sprite);
 //}
 
+
 void Game::update(sf::RenderWindow& window,sf::Sprite& background_sprite, sf::Sprite& frame_sprite)
 {
 	window.draw(background_sprite);
@@ -103,18 +109,43 @@ void Game::updateCards(sf::RenderWindow& window, std::vector<Card*> currently_mo
 	{
 		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
 		{
-			(*iter)->drawCard(window, false);
+			if (!(std::find(currently_moved_cards.begin(), currently_moved_cards.end(), (*iter)) != currently_moved_cards.end()))
+			{
+				(*iter)->drawCard(window, false);
+			}		
 		}
 	}
 }
 
 
-Board& Game::getBoard()
+bool Game::checkIfReleasedCardsInArea(float mouse_pos_x, float  mouse_pos_y)
 {
-	return board;
+	auto top_cards = board.getCardsOnTopOfTiles();
+	auto itr = top_cards.begin();
+	for(unsigned int i=1;i<=top_cards.size(); i++)
+	{
+		if ((*itr) != nullptr)
+		{
+			if (mouse_pos_x >= (*itr)->getRevealedPartPosition()[0].x && mouse_pos_x <= (*itr)->getRevealedPartPosition()[1].x &&
+				mouse_pos_y >= (*itr)->getRevealedPartPosition()[0].y && mouse_pos_y <= (*itr)->getRevealedPartPosition()[1].y)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if (mouse_pos_x >= (100.0f + i * 220.0f) && mouse_pos_x < (225.0f + i * 220.0f) &&
+				mouse_pos_y >= 250.0f && mouse_pos_y <= 431.5f)
+			{
+				return true;
+			}
+		}
+		itr++;
+	}
+	return false;
 }
 
-//void Game::update(sf::Time dt)
-//{
-
-//}
+bool Game::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* chosen_card)
+{
+	return false;
+}

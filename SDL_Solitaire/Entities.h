@@ -11,13 +11,15 @@ class Card
 	std::vector<sf::Vector2f> position; // left upper,  right lower
 	sf::Sprite type_of_card;
 	bool is_on_top;
+	bool is_revealed;
 public:
 	sf::Texture texture;
 	sf::Sprite &getCardSprite();
+	void changeIsRevealedState();
 	void changeIsOnTopState();
 	bool checkIfIsOnTop();
-	bool is_revealed;
-	std::vector<sf::Vector2f> getReveledPart();
+	bool checkIfIsRevealed();
+	std::vector<sf::Vector2f> getRevealedPartPosition();
 	Card(std::string color, std::string value);
 	void moveCard();
 	void drawCard(sf::RenderWindow& window, bool move_mouse);

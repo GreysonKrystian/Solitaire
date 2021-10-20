@@ -14,9 +14,8 @@ public:
 	std::vector<Tile*> &getTiles();
 	std::vector<Card*>& getCardsOnBoard();
 	void dealTheCards();
-	std::vector<Card*>& getRevealedCards();
+	std::vector<Card*>& getCardsOnTopOfTiles();
 	void setRevealedCards();
-	bool checkWinConditions();
 	void changeTileOfCard(Tile* old_tile, Tile* new_tile, Card* chosen_card);
-	bool checkIfChangeLegal(Tile* old_tile, Tile* new_tile, Card* chosen_card);
+	bool isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card);
 };
