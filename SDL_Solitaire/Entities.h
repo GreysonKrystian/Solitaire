@@ -48,6 +48,7 @@ class Tile
 {
 	int cards_left;
 	std::vector<Card*> cards_on_tile;
+	sf::Vector2f position_on_board;
 public:
 	Tile();
 	std::vector<Card*> &getCardsOnTile();

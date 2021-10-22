@@ -30,7 +30,7 @@ std::vector<Card*>& Board::getCardsOnBoard()
 	{
 		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
 		{
-			cards.push_back((*iter));
+			cards.push_back(*iter);
 		}
 	}
 	return cards;
@@ -56,12 +56,12 @@ void Board::dealTheCards()
 	}
 }
 
-std::vector<Card*>& Board::getCardsOnTopOfTiles()
+std::vector<Card*> Board::getCardsOnTopOfTiles()
 {
 	std::vector<Card*> cards_on_top;
 	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
 	{
-		if ((*itr)->getCardsOnTile().size() != 0)
+		if (!(*itr)->getCardsOnTile().empty())
 			cards_on_top.push_back((*itr)->getCardsOnTile().back());
 		else
 			cards_on_top.push_back(nullptr);
@@ -78,22 +78,27 @@ void Board::setRevealedCards() // syf
 		{
 			if ((*iter)->checkIfIsOnTop())
 			{
-				revealed_cards.push_back((*iter));
+				revealed_cards.push_back(*iter);
 			}
 		}
 	}
 }
 
 
-void Board::changeTileOfCard(Tile* old_tile, Tile* new_tile, Card* chosen_card)
+void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 {
 	std::vector<Card*> cards_to_transfer;
-	for (auto itr = old_tile->getCardsOnTile().begin(); itr < old_tile->getCardsOnTile().end(); itr++)
+	for (auto itr = old_tile->getCardsOnTile().rbegin(); itr != old_tile->getCardsOnTile().rend(); itr++)
 	{
-		cards_to_transfer.push_back((*itr));
+		cards_to_transfer.push_back(*itr);
 		old_tile->getCardsOnTile().pop_back();
-		if ((*itr) == chosen_card)
+		if (*itr == chosen_card)
 			break;
+	}
+	for (auto itr = cards_to_transfer.begin(); itr!= cards_to_transfer.end(); itr++)
+	{
+		new_tile->addCardToTile((*itr));
+		(*itr)->setPosition();
 	}
 }
 
@@ -102,7 +107,10 @@ bool Board::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card
 	// add to empty tile  TODO
 	// deal with king clicked
 	std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
-	if (std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) != (std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue())))
+	auto x = std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue());
+	auto t = std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) + 1;
+	if (std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue()) !=
+		std::find(value_order.begin(), value_order.end(), clicked_card->getValue())+1)
 	{
 		return false;
 	}
@@ -123,3 +131,13 @@ bool Board::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card
 	return true;
 }
 
+Tile* Board::getTileOnPosition(int mouse_position_x)
+{
+	const int tile_index = (mouse_position_x - 100) / 220;
+	return getTiles()[tile_index];
+}
+
+std::vector<Card*>& Board::getRevealedCards()
+{
+	return revealed_cards;
+}

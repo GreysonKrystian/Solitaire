@@ -16,10 +16,12 @@ int main()
 
 
 	game.getBoard().setRevealedCards();
-	for (auto itr = game.getBoard().getCardsOnTopOfTiles().begin(); itr != game.getBoard().getCardsOnTopOfTiles().end(); itr++)
+	for (auto itr = game.getBoard().getRevealedCards().begin(); itr != game.getBoard().getRevealedCards().end(); itr++)
 	{
 		(*itr)->texture.loadFromFile("images/" + (*itr)->getValue() + "_of_" + (*itr)->getColor() + ".png");
 	}
+	Card* clicked_card = nullptr;
+	Tile* tile_of_origin = nullptr;
 	while (window.isOpen())
 	{
 		game.update(window, game.background_sprite, game.frame_sprite);
@@ -40,9 +42,8 @@ int main()
 					//auto g = sf::Mouse::getPosition(window).y;
 					//auto h = float((*iter)->getReveledPart()[1].y);
 
-
 					if ((event.mouseButton.button == sf::Mouse::Left) && (float(sf::Mouse::getPosition(window).x) >= (*iter)->getRevealedPartPosition()[0].x) &&
-						(float(sf::Mouse::getPosition(window).x) <= (*iter)->getRevealedPartPosition()[1].x) && (float(sf::Mouse::getPosition(window).y) >= (*iter)->getRevealedPartPosition()[0].y) 
+						(float(sf::Mouse::getPosition(window).x) <= (*iter)->getRevealedPartPosition()[1].x) && (float(sf::Mouse::getPosition(window).y) >= (*iter)->getRevealedPartPosition()[0].y)
 						&&(sf::Mouse::getPosition(window).y <= float((*iter)->getRevealedPartPosition()[1].y)) && (*iter)->checkIfIsRevealed())
 					{
 						while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -57,12 +58,15 @@ int main()
 							game.updateCards(window, { (*iter) });
 							(*iter)->drawCard(window, true);
 							window.display();
-							if (event.type == sf::Event::MouseButtonReleased && game.checkIfReleasedCardsInArea(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y) 
-								&& game.getBoard().isTileChangeLegal((*itr),(),(*iter)))
-							{
-
-							}
-							
+							clicked_card = (*iter);
+							tile_of_origin = (*itr);
+							std::cout << clicked_card << std::endl;
+							std::cout << tile_of_origin << std::endl;
+						}
+						if (event.type == sf::Event::MouseButtonReleased && game.checkIfReleasedCardsInArea(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y)
+							&& game.getBoard().isTileChangeLegal(tile_of_origin, (game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x)), clicked_card))
+						{
+							game.getBoard().changeTileOfCards(tile_of_origin, (game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x)), clicked_card);
 						}
 					}
 				}

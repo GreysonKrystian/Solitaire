@@ -140,12 +140,7 @@ bool Game::checkIfReleasedCardsInArea(float mouse_pos_x, float  mouse_pos_y)
 				return true;
 			}
 		}
-		itr++;
+		++itr;
 	}
-	return false;
-}
-
-bool Game::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* chosen_card)
-{
 	return false;
 }
