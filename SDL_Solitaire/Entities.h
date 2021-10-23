@@ -22,11 +22,11 @@ public:
 	sf::Vector2f& getSize();
 	void changeIsRevealedState();
 	void changeIsOnTopState();
-	bool checkIfIsOnTop();
-	bool checkIfIsRevealed();
+	bool isOnTop();
+	bool isRevealed();
 	std::vector<sf::Vector2f> getRevealedPartPosition();
 	Card(std::string color, std::string value);
-	void drawCard(sf::RenderWindow& window, bool move_mouse);
+	void drawCard(sf::RenderWindow& window, bool move_mouse, int y_axis_relocation=0);
 	std::string getColor();
 	std::string getValue();
 	void setPosition(sf::Vector2f left_upper_corner, sf::Vector2f right_lower_corner);

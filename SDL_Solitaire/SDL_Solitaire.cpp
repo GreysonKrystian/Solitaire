@@ -43,20 +43,16 @@ int main()
 
 					if ((event.mouseButton.button == sf::Mouse::Left) && (float(sf::Mouse::getPosition(window).x) >= (*iter)->getRevealedPartPosition()[0].x) &&
 						(float(sf::Mouse::getPosition(window).x) <= (*iter)->getRevealedPartPosition()[1].x) && (float(sf::Mouse::getPosition(window).y) >= (*iter)->getRevealedPartPosition()[0].y)
-						&&(sf::Mouse::getPosition(window).y <= float((*iter)->getRevealedPartPosition()[1].y)) && (*iter)->checkIfIsRevealed())
+						&&(sf::Mouse::getPosition(window).y <= float((*iter)->getRevealedPartPosition()[1].y)) && (*iter)->isRevealed())
 					{
 						while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 						{
-							window.clear();
-							//std::cout << (*iter)->getValue() << " of " << (*iter)->getColor() << std::endl;
-							//(*iter)->getCardSprite().setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-							//(*iter)->getCardSprite().setOrigin(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-
-							//(*iter)->getCardSprite().setPosition(500, 500); 
-							game.update(window, game.background_sprite, game.frame_sprite);
-							game.updateCards(window, { (*iter) });
-							(*iter)->drawCard(window, true);
-							window.display();
+							std::vector<Card*> cards_to_move;
+							for(auto cards_iterator = iter; cards_iterator != (*itr)->getCardsOnTile().end(); cards_iterator++)
+							{
+								cards_to_move.push_back((*cards_iterator));
+							}
+							game.moveCardsOnScreen(window, cards_to_move);
 							clicked_card = (*iter);
 							tile_of_origin = (*itr);
 						}
@@ -64,7 +60,7 @@ int main()
 							&& game.getBoard().isTileChangeLegal(tile_of_origin, (game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x)), clicked_card))
 						{
 							game.getBoard().changeTileOfCards(tile_of_origin, (game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x)), clicked_card);
-							if (!tile_of_origin->getCardsOnTile().back()->checkIfIsRevealed())
+							if (!tile_of_origin->getCardsOnTile().back()->isRevealed())
 								tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
 							break;
 						}

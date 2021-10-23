@@ -45,7 +45,7 @@ void Board::dealTheCards()
 			Card* card = deck.drawRandomCard();
 			tiles[i]->addCardToTile(card);
 			float x = 100 + i * 220;
-			float y = 250 + k * 30;
+			float y = 250 + k * 20;
 			card->setPosition({ x, y }, {x + card->getSize().x, y + card->getSize().y });
 			if (k == i)
 			{
@@ -76,7 +76,7 @@ void Board::setRevealedCards() // syf
 	{
 		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
 		{
-			if ((*iter)->checkIfIsOnTop())
+			if ((*iter)->isOnTop())
 			{
 				revealed_cards.push_back(*iter);
 			}
@@ -101,8 +101,8 @@ void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 	new_tile->getCardsOnTile().back()->changeIsOnTopState();
 	for (auto itr = cards_to_transfer.begin(); itr!= cards_to_transfer.end(); itr++)
 	{
-		(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y+30 },
-			{ new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y+30 });
+		(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y+20 },
+			{ new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y+20 });
 		new_tile->addCardToTile((*itr));
 	}
 	old_tile->getCardsOnTile().back()->changeIsOnTopState();

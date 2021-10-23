@@ -15,16 +15,16 @@ void Card::changeIsOnTopState()
 {
 	if (is_on_top == true)
 		is_on_top = false;
-	if (is_on_top == false)
+	else if (is_on_top == false)
 		is_on_top = true;
 }
 
-bool Card::checkIfIsOnTop()
+bool Card::isOnTop()
 {
 	return is_on_top;
 }
 
-bool Card::checkIfIsRevealed()
+bool Card::isRevealed()
 {
 	return is_revealed;
 }
@@ -34,7 +34,7 @@ std::vector<sf::Vector2f> Card::getRevealedPartPosition()
 	std::vector<sf::Vector2f> revealed;
 	if (!is_on_top)
 	{
-		revealed = { position[0], {position[1].x, position[0].y + 30} }; //TODO
+		revealed = { position[0], {position[1].x, position[0].y + 20} }; //TODO
 	}
 	else
 	{
@@ -49,7 +49,7 @@ void Card::setPosition(sf::Vector2f left_upper_corner, sf::Vector2f right_lower_
 }
 
 
-void Card::drawCard(sf::RenderWindow& window, bool move_mouse)
+void Card::drawCard(sf::RenderWindow& window, bool move_mouse, int y_axis_relocation)
 {
 	if (is_revealed)
 		sprite_of_card.setTexture(front_texture);
@@ -58,7 +58,7 @@ void Card::drawCard(sf::RenderWindow& window, bool move_mouse)
 	if (!move_mouse)
 		sprite_of_card.setPosition(position[0]);
 	else
-		sprite_of_card.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+		sprite_of_card.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y+y_axis_relocation);
 	window.draw(sprite_of_card);
 }
 
@@ -97,7 +97,7 @@ void Card::changeIsRevealedState()
 {
 	if (is_revealed == true)
 		is_revealed = false;
-	if (is_revealed == false)
+	else if (is_revealed == false)
 		is_revealed = true;
 }
 

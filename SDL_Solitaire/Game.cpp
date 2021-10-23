@@ -1,6 +1,8 @@
 #include "Game.h"
 
 
+
+
 Game::Game(float window_width, float window_height, std::string name, Board& board)
 {
 	this->name = name;
@@ -143,4 +145,23 @@ bool Game::checkIfReleasedCardsInArea(float mouse_pos_x, float  mouse_pos_y)
 		++itr;
 	}
 	return false;
+}
+
+void Game::moveCardsOnScreen(sf::RenderWindow &window, std::vector<Card*> cards_to_move)
+{
+	window.clear();
+	//std::cout << (*iter)->getValue() << " of " << (*iter)->getColor() << std::endl;
+	//(*iter)->getCardSprite().setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+	//(*iter)->getCardSprite().setOrigin(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+
+	//(*iter)->getCardSprite().setPosition(500, 500); 
+	update(window, background_sprite, frame_sprite);
+	updateCards(window, cards_to_move);
+	int relocation = 0;
+	for (auto iter = cards_to_move.begin(); iter != cards_to_move.end(); iter++)
+	{
+		(*iter)->drawCard(window, true, relocation*20);
+		relocation++;
+	}
+	window.display();
 }
