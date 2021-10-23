@@ -3,13 +3,13 @@
 
 Board::Board()
 {
-	Tile* tile_one = new Tile();
-	Tile* tile_two = new Tile();
-	Tile* tile_three = new Tile();
-	Tile* tile_four = new Tile();
-	Tile* tile_five = new Tile();
-	Tile* tile_six = new Tile();
-	Tile* tile_seven = new Tile();
+	Tile* tile_one = new Tile({ 100, 250 });
+	Tile* tile_two = new Tile({ 100 + 220, 250 });
+	Tile* tile_three = new Tile({ 100 + 220*2, 250 });
+	Tile* tile_four = new Tile({ 100 + 220*3, 250 });
+	Tile* tile_five = new Tile({ 100 + 220*4, 250 });
+	Tile* tile_six = new Tile({ 100 + 220*5, 250 });
+	Tile* tile_seven = new Tile({ 100 + 220*6, 250 });
 
 	tiles = {
 		tile_one, tile_two, tile_three, tile_four, tile_five, tile_six, tile_seven
@@ -46,7 +46,7 @@ void Board::dealTheCards()
 			tiles[i]->addCardToTile(card);
 			float x = 100 + i * 220;
 			float y = 250 + k * 30;
-			card->setPosition({ x, y }, {x+125.0f, y + 181.5f });
+			card->setPosition({ x, y }, {x + card->getSize().x, y + card->getSize().y });
 			if (k == i)
 			{
 				card->changeIsRevealedState();
@@ -91,15 +91,21 @@ void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 	for (auto itr = old_tile->getCardsOnTile().rbegin(); itr != old_tile->getCardsOnTile().rend(); itr++)
 	{
 		cards_to_transfer.push_back(*itr);
-		old_tile->getCardsOnTile().pop_back();
-		if (*itr == chosen_card)
+		if ((*itr) == chosen_card)
+		{
+			old_tile->getCardsOnTile().pop_back();
 			break;
+		}
+		old_tile->getCardsOnTile().pop_back();
 	}
+	new_tile->getCardsOnTile().back()->changeIsOnTopState();
 	for (auto itr = cards_to_transfer.begin(); itr!= cards_to_transfer.end(); itr++)
 	{
+		(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y+30 },
+			{ new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y+30 });
 		new_tile->addCardToTile((*itr));
-		(*itr)->setPosition();
 	}
+	old_tile->getCardsOnTile().back()->changeIsOnTopState();
 }
 
 bool Board::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card)
@@ -107,8 +113,6 @@ bool Board::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card
 	// add to empty tile  TODO
 	// deal with king clicked
 	std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
-	auto x = std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue());
-	auto t = std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) + 1;
 	if (std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue()) !=
 		std::find(value_order.begin(), value_order.end(), clicked_card->getValue())+1)
 	{

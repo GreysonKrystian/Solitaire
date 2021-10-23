@@ -13,17 +13,16 @@ int main()
 	//window.setVerticalSyncEnabled(true);
 	sf::Event event;
 	game.getBoard().dealTheCards();
-
-
 	game.getBoard().setRevealedCards();
-	for (auto itr = game.getBoard().getRevealedCards().begin(); itr != game.getBoard().getRevealedCards().end(); itr++)
-	{
-		(*itr)->texture.loadFromFile("images/" + (*itr)->getValue() + "_of_" + (*itr)->getColor() + ".png");
-	}
+	//for (auto itr = game.getBoard().getRevealedCards().begin(); itr != game.getBoard().getRevealedCards().end(); itr++)
+	//{
+	//	(*itr)->back_texture.loadFromFile();
+	//}
 	Card* clicked_card = nullptr;
 	Tile* tile_of_origin = nullptr;
 	while (window.isOpen())
 	{
+		std::cout << float(sf::Mouse::getPosition(window).x) << std::endl;
 		game.update(window, game.background_sprite, game.frame_sprite);
 		game.updateCards(window, {});
 		window.display();
@@ -60,13 +59,14 @@ int main()
 							window.display();
 							clicked_card = (*iter);
 							tile_of_origin = (*itr);
-							std::cout << clicked_card << std::endl;
-							std::cout << tile_of_origin << std::endl;
 						}
 						if (event.type == sf::Event::MouseButtonReleased && game.checkIfReleasedCardsInArea(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y)
 							&& game.getBoard().isTileChangeLegal(tile_of_origin, (game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x)), clicked_card))
 						{
 							game.getBoard().changeTileOfCards(tile_of_origin, (game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x)), clicked_card);
+							if (!tile_of_origin->getCardsOnTile().back()->checkIfIsRevealed())
+								tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
+							break;
 						}
 					}
 				}

@@ -4,9 +4,11 @@ Card::Card(std::string color, std::string value)
 {
 	this->color = color;
 	this->value = value;
-	type_of_card.setScale(0.25, 0.25);
+	this->size = { 125.0f, 181.5f };
+	sprite_of_card.setScale(0.25, 0.25);
 	this->is_revealed = false;
-	texture.loadFromFile("card_back/basic.jpg");
+	back_texture.loadFromFile("card_back/basic.jpg");
+	front_texture.loadFromFile("images/" + value + "_of_" + color + ".png");
 }
 
 void Card::changeIsOnTopState()
@@ -46,18 +48,18 @@ void Card::setPosition(sf::Vector2f left_upper_corner, sf::Vector2f right_lower_
 	position = { left_upper_corner, right_lower_corner };
 }
 
-void Card::moveCard()
-{
-}
 
 void Card::drawCard(sf::RenderWindow& window, bool move_mouse)
 {
-	type_of_card.setTexture(texture);
-	if (!move_mouse)
-		type_of_card.setPosition(position[0]);
+	if (is_revealed)
+		sprite_of_card.setTexture(front_texture);
 	else
-		type_of_card.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-	window.draw(type_of_card);
+		sprite_of_card.setTexture(back_texture);
+	if (!move_mouse)
+		sprite_of_card.setPosition(position[0]);
+	else
+		sprite_of_card.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+	window.draw(sprite_of_card);
 }
 
 std::string Card::getColor()
@@ -71,9 +73,24 @@ std::string Card::getValue()
 };
 
 
+sf::Texture& Card::getBackTexture()
+{
+	return back_texture;
+}
+
+sf::Texture& Card::getFrontTexture()
+{
+	return back_texture;
+}
+
 sf::Sprite& Card::getCardSprite()
 {
-	return type_of_card;
+	return sprite_of_card;
+}
+
+sf::Vector2f& Card::getSize()
+{
+	return size;
 }
 
 void Card::changeIsRevealedState()
@@ -251,8 +268,9 @@ Card* Deck::drawRandomCard() // wtf
 }
 
 
-Tile::Tile()
+Tile::Tile(sf::Vector2f position_on_board)
 {
+	this->position_on_board = position_on_board;
 }
 
 std::vector<Card*> &Tile::getCardsOnTile()
@@ -263,5 +281,10 @@ std::vector<Card*> &Tile::getCardsOnTile()
 void Tile::addCardToTile(Card* card)
 {
 	cards_on_tile.push_back(card);
+}
+
+sf::Vector2f& Tile::getPositionOnBoard()
+{
+	return position_on_board;
 }
 
