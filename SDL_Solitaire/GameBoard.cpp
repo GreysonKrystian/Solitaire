@@ -1,6 +1,8 @@
 #include "GameBoard.h"
 
 
+
+
 Board::Board()
 {
 	Tile* tile_one = new Tile({ 100, 250 });
@@ -87,15 +89,15 @@ void Board::setRevealedCards() // syf
 
 void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 {
-	std::vector<Card*> cards_to_transfer;
+	std::list<Card*> cards_to_transfer;
 	for (auto itr = old_tile->getCardsOnTile().rbegin(); itr != old_tile->getCardsOnTile().rend(); itr++)
 	{
-		cards_to_transfer.push_back(*itr);
+		cards_to_transfer.push_front(*itr);
 		if ((*itr) == chosen_card)
-		{
-			old_tile->getCardsOnTile().pop_back();
 			break;
-		}
+	}
+	for (unsigned int i = 0 ; i < cards_to_transfer.size(); i++)
+	{
 		old_tile->getCardsOnTile().pop_back();
 	}
 	new_tile->getCardsOnTile().back()->changeIsOnTopState();

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <random>
 #include <SFML/Graphics.hpp>
+#include <list>
 #pragma once
 
 class Card
