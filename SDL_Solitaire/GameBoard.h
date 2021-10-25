@@ -10,6 +10,7 @@ class Board
 	Deck deck;
 	std::vector<Card*> revealed_cards;
 public:
+	Deck &getDeck();
 	Board();
 	std::vector<Card*>& getRevealedCards();
 	std::vector<Tile*> &getTiles();

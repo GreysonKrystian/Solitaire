@@ -10,13 +10,17 @@ Game::Game(float window_width, float window_height, std::string name, Board& boa
 	this->window_height = window_height;
 	board = board;
 
-
 	background.loadFromFile("images/background.png");
 	background_sprite.setTexture(background);
 
 	frame.loadFromFile("images/frame.png");
 	frame_sprite.setTexture(frame);
 	frame_sprite.setScale(0.25, 0.25);
+
+	card_back.loadFromFile("card_back/basic.jpg");
+	card_back_sprite.setTexture(card_back);
+	card_back_sprite.setScale(0.25, 0.25);
+
 }
 
 Board& Game::getBoard()
@@ -85,7 +89,7 @@ void Game::placeCards(sf::RenderWindow &window)
 //}
 
 
-void Game::update(sf::RenderWindow& window,sf::Sprite& background_sprite, sf::Sprite& frame_sprite)
+void Game::update(sf::RenderWindow& window)
 {
 	window.draw(background_sprite);
 
@@ -101,6 +105,13 @@ void Game::update(sf::RenderWindow& window,sf::Sprite& background_sprite, sf::Sp
 	{
 		frame_sprite.setPosition(x, 250);
 		window.draw(frame_sprite);
+	}
+	for(unsigned int i=0; i< board.getDeck().getCardsList().size();i++)
+	{
+		card_back_sprite.setPosition(100 + i*0.15, 20);
+		window.draw(card_back_sprite);
+		//board.getDeck().getCardSprite().setPosition(100 + i, 20);
+		//window.draw(board.getDeck().getCardSprite());
 	}
 }
 
@@ -155,7 +166,7 @@ void Game::moveCardsOnScreen(sf::RenderWindow &window, std::vector<Card*> cards_
 	//(*iter)->getCardSprite().setOrigin(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 
 	//(*iter)->getCardSprite().setPosition(500, 500); 
-	update(window, background_sprite, frame_sprite);
+	update(window);
 	updateCards(window, cards_to_move);
 	int relocation = 0;
 	for (auto iter = cards_to_move.begin(); iter != cards_to_move.end(); iter++)

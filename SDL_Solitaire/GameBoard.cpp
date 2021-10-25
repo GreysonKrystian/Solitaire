@@ -1,7 +1,10 @@
 #include "GameBoard.h"
 
 
-
+Deck &Board::getDeck()
+{
+	return deck;
+}
 
 Board::Board()
 {
@@ -120,16 +123,16 @@ bool Board::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card
 	{
 		return false;
 	}
-	if (clicked_card->getColor() == "Spades" || clicked_card->getColor() == "Clubs")
+	if (clicked_card->getColor() == "spades" || clicked_card->getColor() == "clubs")
 	{
-		if (new_tile->getCardsOnTile().back()->getColor() == "Spades" || new_tile->getCardsOnTile().back()->getColor() == "Clubs")
+		if (new_tile->getCardsOnTile().back()->getColor() == "spades" || new_tile->getCardsOnTile().back()->getColor() == "clubs")
 		{
 			return false;
 		}
 	}
 	else
 	{
-		if (new_tile->getCardsOnTile().back()->getColor() == "Diamonds" || new_tile->getCardsOnTile().back()->getColor() == "Hearts")
+		if (new_tile->getCardsOnTile().back()->getColor() == "diamonds" || new_tile->getCardsOnTile().back()->getColor() == "hearts")
 		{
 			return false;
 		}

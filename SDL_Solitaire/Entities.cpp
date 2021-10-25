@@ -101,9 +101,12 @@ void Card::changeIsRevealedState()
 		is_revealed = true;
 }
 
-sf::Sprite Deck::getCardBack()
+
+
+
+std::vector<Card*>& Deck::getCardsList()
 {
-	return card_back;
+	return cards_list;
 }
 
 Deck::Deck()
@@ -112,25 +115,14 @@ Deck::Deck()
 	shuffleDeck();
 }
 
-int Deck::getCardsLeft()
-{
-	return Deck::cards_in_deck;
-}
-
-void Deck::addCard()
-{
-	this->cards_in_deck += 1;
-}
 
 void Deck::shuffleDeck()
 {
+	srand(time(nullptr));
 	std::random_shuffle(this->cards_list.begin(), this->cards_list.end(), [](int n) { return rand() % n; });
 }
 
-void Deck::removeCard()
-{
-	cards_in_deck -= 1;
-}
+
 
 void Deck::fillDeck()
 {
@@ -255,15 +247,14 @@ void Deck::fillDeck()
 	ace_d,
 	ace_h
 	};
-	cards_in_deck = 52;
 }
 
 Card* Deck::drawRandomCard() // wtf 
 {
+	srand(time(nullptr));
 	int random_value = rand() % cards_list.size();
 	Card* card = cards_list[random_value];
 	cards_list.erase(cards_list.begin() + random_value);
-	removeCard();
 	return card;
 }
 

@@ -1,6 +1,4 @@
-#include<iterator>
-#include <algorithm>
-#include <random>
+#include <deque>
 #include <SFML/Graphics.hpp>
 #include <list>
 #pragma once
@@ -35,17 +33,12 @@ public:
 
 class Deck
 {
-	int cards_in_deck;
 	void shuffleDeck();
-	void removeCard();
 	void fillDeck();
 	std::vector<Card*> cards_list;
-	sf::Sprite card_back;
 public:
-	sf::Sprite getCardBack();
+	std::vector<Card*>& getCardsList();
 	Deck();
-	int getCardsLeft();
-	void addCard();
 	Card* drawRandomCard();
 };
 
