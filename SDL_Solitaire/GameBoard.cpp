@@ -90,6 +90,16 @@ void Board::setRevealedCards() // syf
 }
 
 
+void Board::putCardFromDeckOnTile(Tile* tile, Card* chosen_card)
+{
+	tile->getCardsOnTile().back()->changeIsOnTopState();
+	chosen_card->setPosition({ tile->getPositionOnBoard().x, tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + 20 },
+		{ tile->getPositionOnBoard().x + chosen_card->getSize().x, tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y + 20 });
+	tile->addCardToTile(chosen_card);
+	chosen_card->changeIsOnTopState();
+	deck.getCardsList().pop_back();
+}
+
 void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 {
 	std::list<Card*> cards_to_transfer;
@@ -113,7 +123,7 @@ void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 	old_tile->getCardsOnTile().back()->changeIsOnTopState();
 }
 
-bool Board::isTileChangeLegal(Tile* old_tile, Tile* new_tile, Card* clicked_card)
+bool Board::isPlacingCardHereLegal(Tile* new_tile, Card* clicked_card)
 {
 	// add to empty tile  TODO
 	// deal with king clicked

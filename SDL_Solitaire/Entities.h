@@ -35,21 +35,24 @@ class Deck
 {
 	void shuffleDeck();
 	void fillDeck();
-	std::vector<Card*> cards_list;
+	std::deque<Card*> cards_list;
+	Card* currently_displayed_card;
 public:
-	std::vector<Card*>& getCardsList();
+	std::deque<Card*>& getCardsList();
 	Deck();
 	Card* drawRandomCard();
+	Card*& getCurrentlyDisplayedCard();
+	void setCurrentlyDisplayedCard(Card* card);
+	void putTopCardOnBack();
 };
 
 class Tile
 {
-	int cards_left;
-	std::vector<Card*> cards_on_tile;
+	std::deque<Card*> cards_on_tile;
 	sf::Vector2f position_on_board;
 public:
 	Tile(sf::Vector2f position_on_board);
-	std::vector<Card*> &getCardsOnTile();
+	std::deque<Card*> &getCardsOnTile();
 	void addCardToTile(Card*);
 	sf::Vector2f& getPositionOnBoard();
 };

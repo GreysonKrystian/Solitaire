@@ -80,7 +80,7 @@ sf::Texture& Card::getBackTexture()
 
 sf::Texture& Card::getFrontTexture()
 {
-	return back_texture;
+	return front_texture;
 }
 
 sf::Sprite& Card::getCardSprite()
@@ -104,7 +104,7 @@ void Card::changeIsRevealedState()
 
 
 
-std::vector<Card*>& Deck::getCardsList()
+std::deque<Card*>& Deck::getCardsList()
 {
 	return cards_list;
 }
@@ -122,7 +122,15 @@ void Deck::shuffleDeck()
 	std::random_shuffle(this->cards_list.begin(), this->cards_list.end(), [](int n) { return rand() % n; });
 }
 
-
+void Deck::putTopCardOnBack()
+{
+	if(currently_displayed_card != nullptr)
+	{
+		Card* front_card = cards_list.front();
+		cards_list.pop_front();
+		cards_list.push_back(front_card);
+	}
+}
 
 void Deck::fillDeck()
 {
@@ -249,7 +257,7 @@ void Deck::fillDeck()
 	};
 }
 
-Card* Deck::drawRandomCard() // wtf 
+Card* Deck::drawRandomCard()
 {
 	srand(time(nullptr));
 	int random_value = rand() % cards_list.size();
@@ -264,7 +272,17 @@ Tile::Tile(sf::Vector2f position_on_board)
 	this->position_on_board = position_on_board;
 }
 
-std::vector<Card*> &Tile::getCardsOnTile()
+Card*& Deck::getCurrentlyDisplayedCard()
+{
+	return currently_displayed_card;
+}
+
+void Deck::setCurrentlyDisplayedCard(Card* card)
+{
+	currently_displayed_card = card;
+}
+
+std::deque<Card*> &Tile::getCardsOnTile()
 {
 	return cards_on_tile;
 }

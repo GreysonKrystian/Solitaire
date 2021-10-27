@@ -3,11 +3,13 @@
 
 
 
+
 Game::Game(float window_width, float window_height, std::string name, Board& board)
 {
 	this->name = name;
 	this->window_width = window_width;
 	this->window_height = window_height;
+	this->cards_size = { 125.0f, 181.5f };
 	board = board;
 
 	background.loadFromFile("images/background.png");
@@ -27,6 +29,12 @@ Board& Game::getBoard()
 {
 	return board;
 }
+
+sf::Vector2f Game::getCardsSize()
+{
+	return cards_size;
+}
+
 //bool Game::createPlayTiles(sf::RenderWindow &window)
 //{
 //	sf::Texture frame;
@@ -113,6 +121,10 @@ void Game::update(sf::RenderWindow& window)
 		//board.getDeck().getCardSprite().setPosition(100 + i, 20);
 		//window.draw(board.getDeck().getCardSprite());
 	}
+	if(board.getDeck().getCurrentlyDisplayedCard() != nullptr)
+	{
+		window.draw(board.getDeck().getCurrentlyDisplayedCard()->getCardSprite());
+	}
 }
 
 
@@ -175,4 +187,27 @@ void Game::moveCardsOnScreen(sf::RenderWindow &window, std::vector<Card*> cards_
 		relocation++;
 	}
 	window.display();
+}
+
+
+
+void Game::showCardFromDeck(sf::RenderWindow& window)
+{
+	board.getDeck().putTopCardOnBack();
+	board.getDeck().setCurrentlyDisplayedCard(nullptr);
+	std::vector<Card*> card_to_move = { board.getDeck().getCardsList().back() };
+	constexpr std::chrono::microseconds duration(1);
+	card_to_move[0]->getCardSprite().setTexture(card_to_move[0]->getFrontTexture());
+	for (float position_x = 100; position_x < 250; position_x++)
+	{
+		window.clear();
+		update(window);
+		updateCards(window, card_to_move);
+		card_to_move[0]->getCardSprite().setPosition(position_x, 20);
+		
+		window.draw(card_to_move[0]->getCardSprite());
+		window.display();
+		std::this_thread::sleep_for(duration);
+	}
+	board.getDeck().setCurrentlyDisplayedCard(card_to_move[0]);
 }
