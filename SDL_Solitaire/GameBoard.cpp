@@ -16,9 +16,22 @@ Board::Board()
 	Tile* tile_six = new Tile({ 100 + 220*5, 250 });
 	Tile* tile_seven = new Tile({ 100 + 220*6, 250 });
 
+	Pile* pile_one = new Pile({ 600,20 });
+	Pile* pile_two = new Pile({ 850,20 });
+	Pile* pile_three = new Pile({ 1100,20 });
+	Pile* pile_four = new Pile({ 1350,20 });
+
+	piles = { pile_one, pile_two, pile_three, pile_four };
+
 	tiles = {
 		tile_one, tile_two, tile_three, tile_four, tile_five, tile_six, tile_seven
 	};
+	
+}
+
+std::vector<Pile*>& Board::getPiles()
+{
+	return piles;
 }
 
 std::vector<Tile*> &Board::getTiles()
@@ -128,6 +141,8 @@ bool Board::isPlacingCardHereLegal(Tile* new_tile, Card* clicked_card)
 	// add to empty tile  TODO
 	// deal with king clicked
 	std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
+	auto test = std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue());
+	auto test2 = std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) + 1;
 	if (std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue()) !=
 		std::find(value_order.begin(), value_order.end(), clicked_card->getValue())+1)
 	{
@@ -152,8 +167,18 @@ bool Board::isPlacingCardHereLegal(Tile* new_tile, Card* clicked_card)
 
 Tile* Board::getTileOnPosition(int mouse_position_x)
 {
-	const int tile_index = (mouse_position_x - 100) / 220;
-	return getTiles()[tile_index];
+		const int tile_index = (mouse_position_x - 100) / 220;
+		return getTiles()[tile_index];
+}
+
+Pile* Board::getPileOnPosition(int mouse_position_x)
+{
+	if (mouse_position_x > 600)
+	{
+		const int tile_index = (mouse_position_x - 600) / 250;
+		return getPiles()[tile_index];
+	}
+		return nullptr;
 }
 
 std::vector<Card*>& Board::getRevealedCards()

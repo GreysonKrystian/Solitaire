@@ -30,6 +30,7 @@ public:
 	void updateCards(sf::RenderWindow& window, std::vector<Card*> currently_moved_cards);
 	bool checkIfReleasedCardsInArea(float mouse_pos_x, float mouse_pos_y);
 	void moveCardsOnScreen(sf::RenderWindow& window, std::vector<Card*> cards_to_move);
+	bool isCardInPilesArea(sf::RenderWindow& window);
 	void showCardFromDeck(sf::RenderWindow& window);
 	bool isCardFromTilesClicked();
 	Board& getBoard();

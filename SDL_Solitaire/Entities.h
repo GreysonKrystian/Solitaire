@@ -59,6 +59,14 @@ public:
 
 class Pile
 {
+private:
+	sf::Vector2f position;
 	int number_of_cards_on_pile;
 	Card* last_card;
+public:
+	Card* getLastCard();
+	sf::Vector2f getPosition();
+	Pile(sf::Vector2f position);
+	void putCardOnPile(Card* card);
+	bool isPuttingCardOnLegal(Card* card);
 };

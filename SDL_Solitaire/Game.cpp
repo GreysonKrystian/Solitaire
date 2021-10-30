@@ -6,6 +6,7 @@
 
 Game::Game(float window_width, float window_height, std::string name, Board& board)
 {
+
 	this->name = name;
 	this->window_width = window_width;
 	this->window_height = window_height;
@@ -108,6 +109,8 @@ void Game::update(sf::RenderWindow& window)
 	{
 		frame_sprite.setPosition(x, 20);
 		window.draw(frame_sprite);
+		if(getBoard().getPileOnPosition(x) != nullptr && getBoard().getPileOnPosition(x)->getLastCard()!= nullptr)
+			window.draw(getBoard().getPileOnPosition(x)->getLastCard()->getCardSprite());
 	}
 	for (float x = 100; x <= 1500; x += 220)
 	{
@@ -124,6 +127,13 @@ void Game::update(sf::RenderWindow& window)
 	if(board.getDeck().getCurrentlyDisplayedCard() != nullptr)
 	{
 		window.draw(board.getDeck().getCurrentlyDisplayedCard()->getCardSprite());
+	}
+	for(auto itr = board.getPiles().begin(); itr != board.getPiles().end(); itr++)
+	{
+		if((*itr)->getLastCard() != nullptr)
+		{
+			window.draw((*itr)->getLastCard()->getCardSprite());
+		}
 	}
 }
 
@@ -189,6 +199,16 @@ void Game::moveCardsOnScreen(sf::RenderWindow &window, std::vector<Card*> cards_
 	window.display();
 }
 
+bool Game::isCardInPilesArea(sf::RenderWindow& window)
+{
+	for (auto itr = board.getPiles().begin(); itr != board.getPiles().end(); itr++)
+	{
+		if (sf::Mouse::getPosition(window).x > (*itr)->getPosition().x && sf::Mouse::getPosition(window).x < (*itr)->getPosition().x + getCardsSize().x &&
+			sf::Mouse::getPosition(window).y >(*itr)->getPosition().y && sf::Mouse::getPosition(window).y < (*itr)->getPosition().y + getCardsSize().y)
+			return true;
+	}
+	return false;
+} 
 
 
 void Game::showCardFromDeck(sf::RenderWindow& window)

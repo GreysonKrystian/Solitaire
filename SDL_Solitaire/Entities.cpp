@@ -297,3 +297,51 @@ sf::Vector2f& Tile::getPositionOnBoard()
 	return position_on_board;
 }
 
+
+Card* Pile::getLastCard()
+{
+	return last_card;
+}
+
+sf::Vector2f Pile::getPosition()
+{
+	return position;
+}
+
+Pile::Pile(sf::Vector2f position)
+{
+	this->position = position;
+	this->number_of_cards_on_pile = 0;
+	this->last_card = nullptr;
+}
+
+void Pile::putCardOnPile(Card* card)
+{
+	last_card = card;
+	number_of_cards_on_pile += 1;
+}
+
+bool Pile::isPuttingCardOnLegal(Card* card)
+{
+	const std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
+	if (last_card == nullptr)
+	{
+	if (card->getValue() == "ace")
+		return true;
+	return false;
+	}
+	else if (last_card->getValue() != "king")
+	{
+		auto test1 = std::find(value_order.begin(), value_order.end(), last_card->getValue());
+
+		if (std::find(value_order.begin(), value_order.end(), last_card->getValue()) !=
+			std::find(value_order.begin(), value_order.end(), card->getValue()) - 1)
+			return false;
+		
+		if (last_card->getColor() != card->getColor())
+			return false;
+
+	}
+	return true;
+}
+
