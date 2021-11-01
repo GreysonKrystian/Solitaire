@@ -157,7 +157,7 @@ bool Game::checkIfReleasedCardsInArea(float mouse_pos_x, float  mouse_pos_y)
 {
 	auto top_cards = board.getCardsOnTopOfTiles();
 	auto itr = top_cards.begin();
-	for(unsigned int i=1;i<=top_cards.size(); i++)
+	for(unsigned int i=0;i<top_cards.size(); i++)
 	{
 		if ((*itr) != nullptr)
 		{

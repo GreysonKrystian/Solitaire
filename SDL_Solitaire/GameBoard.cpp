@@ -90,9 +90,9 @@ std::vector<Card*> Board::getCardsOnTopOfTiles()
 void Board::setRevealedCards() // syf
 {
 
-	for (auto itr = tiles.begin(); itr != tiles.end(); itr++)
+	for (auto itr = tiles.begin(); itr != tiles.end() ; itr++)
 	{
-		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end(); iter++)
+		for (auto iter = (*itr)->getCardsOnTile().begin(); iter != (*itr)->getCardsOnTile().end() && (*iter) != nullptr; iter++)
 		{
 			if ((*iter)->isOnTop())
 			{
@@ -105,9 +105,17 @@ void Board::setRevealedCards() // syf
 
 void Board::putCardFromDeckOnTile(Tile* tile, Card* chosen_card)
 {
-	tile->getCardsOnTile().back()->changeIsOnTopState();
-	chosen_card->setPosition({ tile->getPositionOnBoard().x, tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + 20 },
-		{ tile->getPositionOnBoard().x + chosen_card->getSize().x, tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y + 20 });
+	if (!tile->getCardsOnTile().empty())
+	{
+		tile->getCardsOnTile().back()->changeIsOnTopState();
+
+		chosen_card->setPosition({ tile->getPositionOnBoard().x, tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + 20 },
+			{ tile->getPositionOnBoard().x + chosen_card->getSize().x, tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y + 20 });
+	}
+	else
+	{
+		chosen_card->setPosition({ tile->getPositionOnBoard().x, tile->getPositionOnBoard().y }, { tile->getPositionOnBoard().x + chosen_card->getSize().x, tile->getPositionOnBoard().y + chosen_card->getSize().y});
+	}
 	tile->addCardToTile(chosen_card);
 	chosen_card->changeIsOnTopState();
 	deck.getCardsList().pop_back();
@@ -126,14 +134,28 @@ void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 	{
 		old_tile->getCardsOnTile().pop_back();
 	}
-	new_tile->getCardsOnTile().back()->changeIsOnTopState();
-	for (auto itr = cards_to_transfer.begin(); itr!= cards_to_transfer.end(); itr++)
+	if (!new_tile->getCardsOnTile().empty())
 	{
-		(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y+20 },
-			{ new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y+20 });
-		new_tile->addCardToTile((*itr));
+		new_tile->getCardsOnTile().back()->changeIsOnTopState();
+
+		for (auto itr = cards_to_transfer.begin(); itr != cards_to_transfer.end(); itr++)
+		{
+			if (new_tile->getCardsOnTile().empty())
+			{
+					(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getPositionOnBoard().y }, { new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getPositionOnBoard().y + chosen_card->getSize().y });
+			}
+			else
+			{
+			(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + 20 },
+				{ new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y + 20 });
+			}
+			new_tile->addCardToTile((*itr));
+		}
 	}
-	old_tile->getCardsOnTile().back()->changeIsOnTopState();
+	if (!old_tile->getCardsOnTile().empty())
+	{
+		old_tile->getCardsOnTile().back()->changeIsOnTopState();
+	}
 }
 
 bool Board::isPlacingCardHereLegal(Tile* new_tile, Card* clicked_card)
@@ -141,28 +163,35 @@ bool Board::isPlacingCardHereLegal(Tile* new_tile, Card* clicked_card)
 	// add to empty tile  TODO
 	// deal with king clicked
 	std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
-	auto test = std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue());
-	auto test2 = std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) + 1;
-	if (std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue()) !=
-		std::find(value_order.begin(), value_order.end(), clicked_card->getValue())+1)
+	if (!new_tile->getCardsOnTile().empty())
 	{
-		return false;
-	}
-	if (clicked_card->getColor() == "spades" || clicked_card->getColor() == "clubs")
-	{
-		if (new_tile->getCardsOnTile().back()->getColor() == "spades" || new_tile->getCardsOnTile().back()->getColor() == "clubs")
+
+		if (std::find(value_order.begin(), value_order.end(), new_tile->getCardsOnTile().back()->getValue()) !=
+			std::find(value_order.begin(), value_order.end(), clicked_card->getValue()) + 1)
 		{
 			return false;
 		}
-	}
-	else
-	{
-		if (new_tile->getCardsOnTile().back()->getColor() == "diamonds" || new_tile->getCardsOnTile().back()->getColor() == "hearts")
+		if (clicked_card->getColor() == "spades" || clicked_card->getColor() == "clubs")
 		{
-			return false;
+			if (new_tile->getCardsOnTile().back()->getColor() == "spades" || new_tile->getCardsOnTile().back()->getColor() == "clubs")
+			{
+				return false;
+			}
 		}
+		else
+		{
+			if (new_tile->getCardsOnTile().back()->getColor() == "diamonds" || new_tile->getCardsOnTile().back()->getColor() == "hearts")
+			{
+				return false;
+			}
+		}
+		return true;
 	}
-	return true;
+	if(clicked_card->getValue() == "king")
+	{
+		return true;
+	}
+	return false;
 }
 
 Tile* Board::getTileOnPosition(int mouse_position_x)

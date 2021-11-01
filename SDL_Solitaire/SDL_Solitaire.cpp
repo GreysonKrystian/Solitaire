@@ -18,7 +18,6 @@ int main()
 	Tile* tile_of_origin = nullptr;
 	while (window.isOpen())
 	{
-		std::cout << sf::Mouse::getPosition(window).y << std::endl;
 		//std::cout << float(sf::Mouse::getPosition(window).x) << std::endl;
 		game.update(window);
 		game.updateCards(window, {});
@@ -27,7 +26,10 @@ int main()
 		{
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				// REVEALING CARD FROM DECK
+				if (!game.getBoard().getDeck().getCardsList().empty())
+				{
+
+					// REVEALING CARD FROM DECK
 				if (event.mouseButton.button == sf::Mouse::Left && float(sf::Mouse::getPosition(window).x) >= 100.0f &&
 					float(sf::Mouse::getPosition(window).x) <= 100.f + game.getCardsSize().x && float(sf::Mouse::getPosition(window).y) >= 20.0f
 					&& sf::Mouse::getPosition(window).y <= 20.0f + game.getCardsSize().y)
@@ -54,34 +56,21 @@ int main()
 					{
 						game.getBoard().putCardFromDeckOnTile(game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x), game.getBoard().getDeck().getCardsList().back());
 					}
-					else if(pile != nullptr && game.isCardInPilesArea(window) && pile->isPuttingCardOnLegal(game.getBoard().getDeck().getCardsList().back()))
+					else if (pile != nullptr && game.isCardInPilesArea(window) && pile->isPuttingCardOnLegal(game.getBoard().getDeck().getCardsList().back()))
 					{
-							pile->putCardOnPile(game.getBoard().getDeck().getCardsList().back());
-							game.getBoard().getDeck().getCardsList().pop_back();
-							// zamienic w funkcje
-							clicked_card_from_deck->getCardSprite().setPosition(pile->getPosition().x, pile->getPosition().y);
-							window.clear();
-							game.update(window);
-							game.updateCards(window, {});
-							window.draw(clicked_card_from_deck->getCardSprite());
-							window.display();
+						pile->putCardOnPile(game.getBoard().getDeck().getCardsList().back());
+						game.getBoard().getDeck().getCardsList().pop_back();
+						// zamienic w funkcje TODO
+						clicked_card_from_deck->getCardSprite().setPosition(pile->getPosition().x, pile->getPosition().y);
+						window.clear();
+						game.update(window);
+						game.updateCards(window, {});
+						window.draw(clicked_card_from_deck->getCardSprite());
+						window.display();
 					}
-					//else if (event.type == sf::Event::MouseButtonReleased && game.isCardInPilesArea(window) && game.getBoard().getPileOnPosition(sf::Mouse::getPosition(window).x)->isPuttingCardOnLegal(clicked_card))
-					//{
-					//	//auto pile = game.getBoard().getPileOnPosition(sf::Mouse::getPosition(window).x);
-					//	pile->putCardOnPile(clicked_card);
-					//	game.getBoard().getDeck().getCardsList().pop_back();
-					//	// zamienic w funkcje
-					//	clicked_card->getCardSprite().setPosition(pile->getPosition().x, pile->getPosition().y);
-					//	window.clear();
-					//	game.update(window);
-					//	game.updateCards(window, {});
-					//	window.draw(clicked_card->getCardSprite());
-					//	window.display();
-					//}
 					else
 					{
-						// zamienic w funkcje
+						// zamienic w funkcje TODO
 						clicked_card_from_deck->changeIsRevealedState();
 						clicked_card_from_deck->getCardSprite().setPosition(250.0f, 20.0f);
 						window.clear();
@@ -90,6 +79,8 @@ int main()
 						window.draw(clicked_card_from_deck->getCardSprite());
 						window.display();
 					}
+				}
+
 				}
 
 				// MOVING CARD FROM TILE
@@ -116,15 +107,31 @@ int main()
 					}
 				}
 			}
-
-			if (event.type == sf::Event::MouseButtonReleased && game.checkIfReleasedCardsInArea(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y)
-				&& game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x) != nullptr
-				&& game.getBoard().isPlacingCardHereLegal(game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x), clicked_card))
+			if (clicked_card != nullptr && tile_of_origin != nullptr) 
 			{
-				game.getBoard().changeTileOfCards(tile_of_origin, game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x), clicked_card);
-				if (!tile_of_origin->getCardsOnTile().back()->isRevealed())
-					tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
-				break;
+				Pile* pile = game.getBoard().getPileOnPosition(sf::Mouse::getPosition(window).x);
+
+				if (event.type == sf::Event::MouseButtonReleased && game.checkIfReleasedCardsInArea(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y)
+					&& game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x) != nullptr
+					&& game.getBoard().isPlacingCardHereLegal(game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x), clicked_card))
+				{
+					game.getBoard().changeTileOfCards(tile_of_origin, game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x), clicked_card);
+					if (!tile_of_origin->getCardsOnTile().empty() && !tile_of_origin->getCardsOnTile().back()->isRevealed())
+						tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
+					break;
+				}
+
+				if(event.type == sf::Event::MouseButtonReleased && pile != nullptr && game.isCardInPilesArea(window) && pile->isPuttingCardOnLegal(clicked_card))
+				{
+					pile->putCardOnPile(clicked_card);
+					tile_of_origin->getCardsOnTile().pop_back();
+					clicked_card->getCardSprite().setPosition(pile->getPosition().x, pile->getPosition().y);
+					if (!tile_of_origin->getCardsOnTile().empty() && !tile_of_origin->getCardsOnTile().back()->isRevealed())
+					{
+						tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
+						tile_of_origin->getCardsOnTile().back()->changeIsOnTopState();
+					}
+				}
 			}
 
 			if (event.type == sf::Event::Closed)
