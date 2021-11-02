@@ -137,21 +137,22 @@ void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 	if (!new_tile->getCardsOnTile().empty())
 	{
 		new_tile->getCardsOnTile().back()->changeIsOnTopState();
-
-		for (auto itr = cards_to_transfer.begin(); itr != cards_to_transfer.end(); itr++)
-		{
-			if (new_tile->getCardsOnTile().empty())
-			{
-					(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getPositionOnBoard().y }, { new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getPositionOnBoard().y + chosen_card->getSize().y });
-			}
-			else
-			{
-			(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + 20 },
-				{ new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y + 20 });
-			}
-			new_tile->addCardToTile((*itr));
-		}
 	}
+
+	for (auto itr = cards_to_transfer.begin(); itr != cards_to_transfer.end(); itr++)
+	{
+		if (new_tile->getCardsOnTile().empty())
+		{
+				(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getPositionOnBoard().y }, { new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getPositionOnBoard().y + chosen_card->getSize().y });
+		}
+		else
+		{
+		(*itr)->setPosition({ new_tile->getPositionOnBoard().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + 20 },
+			{ new_tile->getPositionOnBoard().x + chosen_card->getSize().x, new_tile->getCardsOnTile().back()->getRevealedPartPosition()[0].y + chosen_card->getSize().y + 20 });
+		}
+		new_tile->addCardToTile((*itr));
+	}
+
 	if (!old_tile->getCardsOnTile().empty())
 	{
 		old_tile->getCardsOnTile().back()->changeIsOnTopState();
@@ -202,7 +203,7 @@ Tile* Board::getTileOnPosition(int mouse_position_x)
 
 Pile* Board::getPileOnPosition(int mouse_position_x)
 {
-	if (mouse_position_x > 600)
+	if (mouse_position_x > 600 && mouse_position_x < 1600)
 	{
 		const int tile_index = (mouse_position_x - 600) / 250;
 		return getPiles()[tile_index];

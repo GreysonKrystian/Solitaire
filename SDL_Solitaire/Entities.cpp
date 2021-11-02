@@ -330,18 +330,16 @@ bool Pile::isPuttingCardOnLegal(Card* card)
 		return true;
 	return false;
 	}
-	else if (last_card->getValue() != "king")
+	if (last_card->getColor() != card->getColor())
+		return false;
+	if (last_card->getValue() == "ace" && card->getValue() != "2")
 	{
-		auto test1 = std::find(value_order.begin(), value_order.end(), last_card->getValue());
-
-		if (std::find(value_order.begin(), value_order.end(), last_card->getValue()) !=
-			std::find(value_order.begin(), value_order.end(), card->getValue()) - 1)
-			return false;
-		
-		if (last_card->getColor() != card->getColor())
-			return false;
-
+		return false;
 	}
+	if (std::find(value_order.begin(), value_order.end(), last_card->getValue()) !=
+		std::find(value_order.begin(), value_order.end(), card->getValue()) - 1)
+		return false;
+
 	return true;
 }
 

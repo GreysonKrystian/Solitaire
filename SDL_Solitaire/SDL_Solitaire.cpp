@@ -121,7 +121,7 @@ int main()
 					break;
 				}
 
-				if(event.type == sf::Event::MouseButtonReleased && pile != nullptr && game.isCardInPilesArea(window) && pile->isPuttingCardOnLegal(clicked_card))
+				if(event.type == sf::Event::MouseButtonReleased && pile != nullptr && game.isCardInPilesArea(window) && pile->isPuttingCardOnLegal(clicked_card) && clicked_card->isOnTop())
 				{
 					pile->putCardOnPile(clicked_card);
 					tile_of_origin->getCardsOnTile().pop_back();
@@ -131,6 +131,7 @@ int main()
 						tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
 						tile_of_origin->getCardsOnTile().back()->changeIsOnTopState();
 					}
+					clicked_card->changeIsOnTopState();
 				}
 			}
 
