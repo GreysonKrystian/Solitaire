@@ -266,6 +266,11 @@ Card* Deck::drawRandomCard()
 	return card;
 }
 
+void Deck::clearCurrentlyDisplayedCard()
+{
+	currently_displayed_card = nullptr;
+}
+
 
 Tile::Tile(sf::Vector2f position_on_board)
 {

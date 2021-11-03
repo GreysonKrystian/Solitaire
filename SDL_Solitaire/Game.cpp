@@ -31,6 +31,21 @@ Board& Game::getBoard()
 	return board;
 }
 
+bool Game::checkWinConditions()
+{
+	unsigned int number_of_filled_piles = 0;
+	for(auto itr = getBoard().getPiles().begin(); getBoard().getPiles().end() != itr; itr++)
+	{
+		if((*itr)->getLastCard() != nullptr && (*itr)->getLastCard()->getValue() == "king")
+		{
+			number_of_filled_piles++;
+		}
+	}
+	if (number_of_filled_piles == 4)
+		return true;
+	return false;
+}
+
 sf::Vector2f Game::getCardsSize()
 {
 	return cards_size;

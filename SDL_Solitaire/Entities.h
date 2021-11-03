@@ -41,6 +41,7 @@ public:
 	std::deque<Card*>& getCardsList();
 	Deck();
 	Card* drawRandomCard();
+	void clearCurrentlyDisplayedCard();
 	Card*& getCurrentlyDisplayedCard();
 	void setCurrentlyDisplayedCard(Card* card);
 	void putTopCardOnBack();

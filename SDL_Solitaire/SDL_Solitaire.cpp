@@ -8,20 +8,22 @@ int main()
 {
 	Board board;
 	Game game(window_width, window_height, "solitaire", board);
-	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "solitaire");
-	//window.setFramerateLimit(60);
-	//window.setVerticalSyncEnabled(true);
+	sf::RenderWindow window(sf::VideoMode(window_width, window_height), "solitaire", sf::Style::Close);
 	sf::Event event;
 	game.getBoard().dealTheCards();
 	game.getBoard().setRevealedCards();
-	Card* clicked_card = nullptr;
-	Tile* tile_of_origin = nullptr;
 	while (window.isOpen())
 	{
+		Card* clicked_card = nullptr;
+		Tile* tile_of_origin = nullptr;
 		//std::cout << float(sf::Mouse::getPosition(window).x) << std::endl;
 		game.update(window);
 		game.updateCards(window, {});
 		window.display();
+		if(game.checkWinConditions())
+		{
+			std::cout << "WIN!" << std::endl;
+		}
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::MouseButtonPressed)
@@ -40,11 +42,11 @@ int main()
 				}
 
 				// MOVING CARD FROM DECK
-				if (event.mouseButton.button == sf::Mouse::Left && (static_cast<float>(sf::Mouse::getPosition(window).x) >= 250.0f &&
+				if (event.mouseButton.button == sf::Mouse::Left && game.getBoard().getDeck().getCurrentlyDisplayedCard() != nullptr && (static_cast<float>(sf::Mouse::getPosition(window).x) >= 250.0f &&
 					(static_cast<float>(sf::Mouse::getPosition(window).x) <= 250.0f + game.getCardsSize().x && static_cast<float>(sf::Mouse::getPosition(window).y) >= 20.0f
 						&& sf::Mouse::getPosition(window).y <= 20.0f + game.getCardsSize().y)))
 				{
-					auto clicked_card_from_deck = game.getBoard().getDeck().getCardsList().back();
+					auto clicked_card_from_deck = game.getBoard().getDeck().getCurrentlyDisplayedCard();
 					clicked_card_from_deck->changeIsRevealedState();
 					while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 					{
@@ -55,11 +57,13 @@ int main()
 						&& game.getBoard().isPlacingCardHereLegal(game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x), game.getBoard().getDeck().getCardsList().back()))
 					{
 						game.getBoard().putCardFromDeckOnTile(game.getBoard().getTileOnPosition(sf::Mouse::getPosition(window).x), game.getBoard().getDeck().getCardsList().back());
+						game.getBoard().getDeck().clearCurrentlyDisplayedCard();
 					}
 					else if (pile != nullptr && game.isCardInPilesArea(window) && pile->isPuttingCardOnLegal(game.getBoard().getDeck().getCardsList().back()))
 					{
 						pile->putCardOnPile(game.getBoard().getDeck().getCardsList().back());
 						game.getBoard().getDeck().getCardsList().pop_back();
+						game.getBoard().getDeck().clearCurrentlyDisplayedCard();
 						// zamienic w funkcje TODO
 						clicked_card_from_deck->getCardSprite().setPosition(pile->getPosition().x, pile->getPosition().y);
 						window.clear();
@@ -102,6 +106,7 @@ int main()
 								game.moveCardsOnScreen(window, cards_to_move);
 								clicked_card = *iter;
 								tile_of_origin = *itr;
+								std::cout << clicked_card->getValue() << std::endl;
 							}
 						}
 					}
@@ -126,10 +131,13 @@ int main()
 					pile->putCardOnPile(clicked_card);
 					tile_of_origin->getCardsOnTile().pop_back();
 					clicked_card->getCardSprite().setPosition(pile->getPosition().x, pile->getPosition().y);
-					if (!tile_of_origin->getCardsOnTile().empty() && !tile_of_origin->getCardsOnTile().back()->isRevealed())
+					if (!tile_of_origin->getCardsOnTile().empty())
 					{
-						tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
 						tile_of_origin->getCardsOnTile().back()->changeIsOnTopState();
+						if(!tile_of_origin->getCardsOnTile().back()->isRevealed())
+						{
+							tile_of_origin->getCardsOnTile().back()->changeIsRevealedState();
+						}
 					}
 					clicked_card->changeIsOnTopState();
 				}
