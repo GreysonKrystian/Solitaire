@@ -4,7 +4,7 @@ Card::Card(std::string color, std::string value)
 {
 	this->color = color;
 	this->value = value;
-	this->size = { 125.0f, 181.5f };
+	this->size = {125.0f, 181.5f};
 	sprite_of_card.setScale(0.25, 0.25);
 	this->is_revealed = false;
 	back_texture.loadFromFile("card_back/basic.jpg");
@@ -34,18 +34,18 @@ std::vector<sf::Vector2f> Card::getRevealedPartPosition()
 	std::vector<sf::Vector2f> revealed;
 	if (!is_on_top)
 	{
-		revealed = { position[0], {position[1].x, position[0].y + 20} }; //TODO
+		revealed = {position[0], {position[1].x, position[0].y + 20}}; //TODO
 	}
 	else
 	{
-		revealed = { position[0], position[1] };
+		revealed = {position[0], position[1]};
 	}
 	return revealed;
 }
 
 void Card::setPosition(sf::Vector2f left_upper_corner, sf::Vector2f right_lower_corner)
 {
-	position = { left_upper_corner, right_lower_corner };
+	position = {left_upper_corner, right_lower_corner};
 }
 
 
@@ -58,18 +58,19 @@ void Card::drawCard(sf::RenderWindow& window, bool move_mouse, int y_axis_reloca
 	if (!move_mouse)
 		sprite_of_card.setPosition(position[0]);
 	else
-		sprite_of_card.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y+y_axis_relocation);
+		sprite_of_card.setPosition(sf::Mouse::getPosition(window).x,
+		                           sf::Mouse::getPosition(window).y + y_axis_relocation);
 	window.draw(sprite_of_card);
 }
 
 std::string Card::getColor()
 {
-	return Card::color;
+	return color;
 };
 
 std::string Card::getValue()
 {
-	return Card::value;
+	return value;
 };
 
 
@@ -102,8 +103,6 @@ void Card::changeIsRevealedState()
 }
 
 
-
-
 std::deque<Card*>& Deck::getCardsList()
 {
 	return cards_list;
@@ -124,7 +123,7 @@ void Deck::shuffleDeck()
 
 void Deck::putTopCardOnBack()
 {
-	if(currently_displayed_card != nullptr)
+	if (currently_displayed_card != nullptr)
 	{
 		Card* front_card = cards_list.front();
 		cards_list.pop_front();
@@ -134,126 +133,125 @@ void Deck::putTopCardOnBack()
 
 void Deck::fillDeck()
 {
+	auto two_s = new Card("spades", "2");
+	auto two_c = new Card("clubs", "2");
+	auto two_d = new Card("diamonds", "2");
+	auto two_h = new Card("hearts", "2");
 
-	Card* two_s = new Card("spades", "2");
-	Card* two_c = new Card("clubs", "2");
-	Card* two_d = new Card("diamonds", "2");
-	Card* two_h = new Card("hearts", "2");
+	auto three_s = new Card("spades", "3");
+	auto three_c = new Card("clubs", "3");
+	auto three_d = new Card("diamonds", "3");
+	auto three_h = new Card("hearts", "3");
 
-	Card* three_s = new Card("spades", "3");
-	Card* three_c = new Card("clubs", "3");
-	Card* three_d = new Card("diamonds", "3");
-	Card* three_h = new Card("hearts", "3");
+	auto four_s = new Card("spades", "4");
+	auto four_c = new Card("clubs", "4");
+	auto four_d = new Card("diamonds", "4");
+	auto four_h = new Card("hearts", "4");
 
-	Card* four_s = new Card("spades", "4");
-	Card* four_c = new Card("clubs", "4");
-	Card* four_d = new Card("diamonds", "4");
-	Card* four_h = new Card("hearts", "4");
+	auto five_s = new Card("spades", "5");
+	auto five_c = new Card("clubs", "5");
+	auto five_d = new Card("diamonds", "5");
+	auto five_h = new Card("hearts", "5");
 
-	Card* five_s = new Card("spades", "5");
-	Card* five_c = new Card("clubs", "5");
-	Card* five_d = new Card("diamonds", "5");
-	Card* five_h = new Card("hearts", "5");
+	auto six_s = new Card("spades", "6");
+	auto six_c = new Card("clubs", "6");
+	auto six_d = new Card("diamonds", "6");
+	auto six_h = new Card("hearts", "6");
 
-	Card* six_s = new Card("spades", "6");
-	Card* six_c = new Card("clubs", "6");
-	Card* six_d = new Card("diamonds", "6");
-	Card* six_h = new Card("hearts", "6");
+	auto seven_s = new Card("spades", "7");
+	auto seven_c = new Card("clubs", "7");
+	auto seven_d = new Card("diamonds", "7");
+	auto seven_h = new Card("hearts", "7");
 
-	Card* seven_s = new Card("spades", "7");
-	Card* seven_c = new Card("clubs", "7");
-	Card* seven_d = new Card("diamonds", "7");
-	Card* seven_h = new Card("hearts", "7");
+	auto eight_s = new Card("spades", "8");
+	auto eight_c = new Card("clubs", "8");
+	auto eight_d = new Card("diamonds", "8");
+	auto eight_h = new Card("hearts", "8");
 
-	Card* eight_s = new Card("spades", "8");
-	Card* eight_c = new Card("clubs", "8");
-	Card* eight_d = new Card("diamonds", "8");
-	Card* eight_h = new Card("hearts", "8");
+	auto nine_s = new Card("spades", "9");
+	auto nine_c = new Card("clubs", "9");
+	auto nine_d = new Card("diamonds", "9");
+	auto nine_h = new Card("hearts", "9");
 
-	Card* nine_s = new Card("spades", "9");
-	Card* nine_c = new Card("clubs", "9");
-	Card* nine_d = new Card("diamonds", "9");
-	Card* nine_h = new Card("hearts", "9");
+	auto ten_s = new Card("spades", "10");
+	auto ten_c = new Card("clubs", "10");
+	auto ten_d = new Card("diamonds", "10");
+	auto ten_h = new Card("hearts", "10");
 
-	Card* ten_s = new Card("spades", "10");
-	Card* ten_c = new Card("clubs", "10");
-	Card* ten_d = new Card("diamonds", "10");
-	Card* ten_h = new Card("hearts", "10");
+	auto jack_s = new Card("spades", "jack");
+	auto jack_c = new Card("clubs", "jack");
+	auto jack_d = new Card("diamonds", "jack");
+	auto jack_h = new Card("hearts", "jack");
 
-	Card* jack_s = new Card("spades", "jack");
-	Card* jack_c = new Card("clubs", "jack");
-	Card* jack_d = new Card("diamonds", "jack");
-	Card* jack_h = new Card("hearts", "jack");
+	auto queen_s = new Card("spades", "queen");
+	auto queen_c = new Card("clubs", "queen");
+	auto queen_d = new Card("diamonds", "queen");
+	auto queen_h = new Card("hearts", "queen");
 
-	Card* queen_s = new Card("spades", "queen");
-	Card* queen_c = new Card("clubs", "queen");
-	Card* queen_d = new Card("diamonds", "queen");
-	Card* queen_h = new Card("hearts", "queen");
+	auto king_s = new Card("spades", "king");
+	auto king_c = new Card("clubs", "king");
+	auto king_d = new Card("diamonds", "king");
+	auto king_h = new Card("hearts", "king");
 
-	Card* king_s = new Card("spades", "king");
-	Card* king_c = new Card("clubs", "king");
-	Card* king_d = new Card("diamonds", "king");
-	Card* king_h = new Card("hearts", "king");
-
-	Card* ace_s = new Card("spades", "ace");
-	Card* ace_c = new Card("clubs", "ace");
-	Card* ace_d = new Card("diamonds", "ace");
-	Card* ace_h = new Card("hearts", "ace");
+	auto ace_s = new Card("spades", "ace");
+	auto ace_c = new Card("clubs", "ace");
+	auto ace_d = new Card("diamonds", "ace");
+	auto ace_h = new Card("hearts", "ace");
 
 	cards_list = {
 
-	two_s,
-	two_c,
-	two_d,
-	two_h,
-	three_s,
-	three_c,
-	three_d,
-	three_h,
-	four_s,
-	four_c,
-	four_d,
-	four_h,
-	five_s,
-	five_c,
-	five_d,
-	five_h,
-	six_s,
-	six_c,
-	six_d,
-	six_h,
-	seven_s,
-	seven_c,
-	seven_d,
-	seven_h,
-	eight_s,
-	eight_c,
-	eight_d,
-	eight_h,
-	nine_s,
-	nine_c,
-	nine_d,
-	nine_h,
-	ten_s,
-	ten_c,
-	ten_d,
-	ten_h,
-	jack_s,
-	jack_c,
-	jack_d,
-	jack_h,
-	queen_s,
-	queen_c,
-	queen_d,
-	queen_h,
-	king_s,
-	king_c,
-	king_d,
-	king_h,
-	ace_s,
-	ace_c,
-	ace_d,
-	ace_h
+		two_s,
+		two_c,
+		two_d,
+		two_h,
+		three_s,
+		three_c,
+		three_d,
+		three_h,
+		four_s,
+		four_c,
+		four_d,
+		four_h,
+		five_s,
+		five_c,
+		five_d,
+		five_h,
+		six_s,
+		six_c,
+		six_d,
+		six_h,
+		seven_s,
+		seven_c,
+		seven_d,
+		seven_h,
+		eight_s,
+		eight_c,
+		eight_d,
+		eight_h,
+		nine_s,
+		nine_c,
+		nine_d,
+		nine_h,
+		ten_s,
+		ten_c,
+		ten_d,
+		ten_h,
+		jack_s,
+		jack_c,
+		jack_d,
+		jack_h,
+		queen_s,
+		queen_c,
+		queen_d,
+		queen_h,
+		king_s,
+		king_c,
+		king_d,
+		king_h,
+		ace_s,
+		ace_c,
+		ace_d,
+		ace_h
 	};
 }
 
@@ -287,7 +285,7 @@ void Deck::setCurrentlyDisplayedCard(Card* card)
 	currently_displayed_card = card;
 }
 
-std::deque<Card*> &Tile::getCardsOnTile()
+std::deque<Card*>& Tile::getCardsOnTile()
 {
 	return cards_on_tile;
 }
@@ -328,12 +326,14 @@ void Pile::putCardOnPile(Card* card)
 
 bool Pile::isPuttingCardOnLegal(Card* card)
 {
-	const std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
+	const std::vector<std::string> value_order = {
+		"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"
+	};
 	if (last_card == nullptr)
 	{
-	if (card->getValue() == "ace")
-		return true;
-	return false;
+		if (card->getValue() == "ace")
+			return true;
+		return false;
 	}
 	if (last_card->getColor() != card->getColor())
 		return false;
@@ -347,4 +347,3 @@ bool Pile::isPuttingCardOnLegal(Card* card)
 
 	return true;
 }
-
