@@ -1,7 +1,9 @@
+#pragma once
 #include <deque>
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <string>
 #include <list>
-#pragma once
 
 class Card
 {

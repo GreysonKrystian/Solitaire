@@ -28,6 +28,8 @@ public:
 	void moveCardsOnScreen(sf::RenderWindow& window, std::vector<Card*> cards_to_move);
 	bool isCardInPilesArea(sf::RenderWindow& window);
 	void showCardFromDeck(sf::RenderWindow& window);
+	void placeCardOnTile(sf::RenderWindow& window, Pile* pile, Card* clicked_card_from_deck);
+	void moveRevealedDeckCardToDefaultPosition(sf::RenderWindow& window, Card* clicked_card_from_deck);
 	Board& getBoard();
 };
 

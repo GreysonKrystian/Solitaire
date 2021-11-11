@@ -51,37 +51,6 @@ sf::Vector2f Game::getCardsSize()
 	return cards_size;
 }
 
-//bool Game::createPlayTiles(sf::RenderWindow &window)
-//{
-//	sf::Texture frame;
-//	if (!frame.loadFromFile("images/frame.png"))
-//	{
-//		return 1;
-//	}
-//	frame_sprite.setTexture(frame);
-//	frame_sprite.setScale(0.25, 0.25);
-//	frame_sprite.setPosition(100, 20);
-//	//window.draw(frame_sprite);
-//	for (float x = 600; x <= 1350; x += 250)
-//	{
-//		frame_sprite.setPosition(x, 20);
-//		//window.draw(frame_sprite);
-//	}
-//	for (float x = 100; x <= 1500; x += 220)
-//	{
-//		frame_sprite.setPosition(x, 250);
-//		//window.draw(frame_sprite);
-//	}
-//	return 0;
-//}
-//
-//
-//void Game::update(sf::RenderWindow& window)
-//{
-//	createBackground(window);
-//	createPlayTiles(window);
-//	placeCards(window);
-//}
 
 void Game::placeCards(sf::RenderWindow &window)
 {
@@ -95,22 +64,6 @@ void Game::placeCards(sf::RenderWindow &window)
 	
 }
 
-//void Game::moveCardWithMouse(Card* card) TODO
-//{
-//	int* result = std::find(board.getRevealedCards(), end, 0);
-//	if (card in )
-//}
-
-//bool Game::createBackground(sf::RenderWindow& window)
-//{
-//	sf::Texture background;
-//	if (!background.loadFromFile("images/background.png"))
-//	{
-//		return 0;
-//	}
-//	background_sprite.setTexture(background);
-//	//window.draw(background_sprite);
-//}
 
 
 void Game::update(sf::RenderWindow& window)
@@ -136,8 +89,7 @@ void Game::update(sf::RenderWindow& window)
 	{
 		card_back_sprite.setPosition(100 + i*0.15, 20);
 		window.draw(card_back_sprite);
-		//board.getDeck().getCardSprite().setPosition(100 + i, 20);
-		//window.draw(board.getDeck().getCardSprite());
+
 	}
 	if(board.getDeck().getCurrentlyDisplayedCard() != nullptr)
 	{
@@ -198,11 +150,6 @@ bool Game::checkIfReleasedCardsInArea(float mouse_pos_x, float  mouse_pos_y)
 void Game::moveCardsOnScreen(sf::RenderWindow &window, std::vector<Card*> cards_to_move)
 {
 	window.clear();
-	//std::cout << (*iter)->getValue() << " of " << (*iter)->getColor() << std::endl;
-	//(*iter)->getCardSprite().setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-	//(*iter)->getCardSprite().setOrigin(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-
-	//(*iter)->getCardSprite().setPosition(500, 500); 
 	update(window);
 	updateCards(window, cards_to_move);
 	int relocation = 0;
@@ -245,4 +192,28 @@ void Game::showCardFromDeck(sf::RenderWindow& window)
 		std::this_thread::sleep_for(duration);
 	}
 	board.getDeck().setCurrentlyDisplayedCard(card_to_move[0]);
+}
+
+void Game::placeCardOnTile(sf::RenderWindow& window, Pile* pile, Card* clicked_card_from_deck)
+{
+	pile->putCardOnPile(getBoard().getDeck().getCardsList().back());
+	getBoard().getDeck().getCardsList().pop_back();
+	getBoard().getDeck().clearCurrentlyDisplayedCard();
+	clicked_card_from_deck->getCardSprite().setPosition(pile->getPosition().x, pile->getPosition().y);
+	window.clear();
+	update(window);
+	updateCards(window, {});
+	window.draw(clicked_card_from_deck->getCardSprite());
+	window.display();
+}
+
+void Game::moveRevealedDeckCardToDefaultPosition(sf::RenderWindow& window, Card* clicked_card_from_deck)
+{
+	clicked_card_from_deck->changeIsRevealedState();
+	clicked_card_from_deck->getCardSprite().setPosition(250.0f, 20.0f);
+	window.clear();
+	update(window);
+	updateCards(window, {});
+	window.draw(clicked_card_from_deck->getCardSprite());
+	window.display();
 }

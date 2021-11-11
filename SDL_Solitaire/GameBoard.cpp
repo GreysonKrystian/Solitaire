@@ -87,7 +87,7 @@ std::vector<Card*> Board::getCardsOnTopOfTiles()
 	return cards_on_top;
 }
 
-void Board::setRevealedCards() // syf
+void Board::setRevealedCards()
 {
 
 	for (auto itr = tiles.begin(); itr != tiles.end() ; itr++)
@@ -161,8 +161,6 @@ void Board::changeTileOfCards(Tile* old_tile, Tile* new_tile, Card* chosen_card)
 
 bool Board::isPlacingCardHereLegal(Tile* new_tile, Card* clicked_card)
 {
-	// add to empty tile  TODO
-	// deal with king clicked
 	std::vector<std::string> value_order = { "ace","2","3","4","5","6","7","8","9","10","jack","queen","king" };
 	if (!new_tile->getCardsOnTile().empty())
 	{
